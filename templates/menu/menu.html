@@ -1,25 +1,40 @@
 {% extends "main/base.html" %}
+{% load static %}
 {% block content %}
-<div>
-    Menu!
+<div style="margin-top: 20px;">
+    <h2>Conocé nuestra carta</h2>
     {% if items %}
     {% for item in items %}
-    <div>
+    <div style="border: solid 1px grey; padding: 10px; margin-top:20px">
+        <div style="display:inline-block;">
+            <b>{{ item.nombre }}</b>
+            {% if item.delivery %}
+            <div style="display:inline-block; text-align: right;">
+                <img style="width: 5%;" src="{% static 'menu/delivery.png' %}">
+            </div>
+            {% endif %}
+            {% if item.vegano %}
+            <div style="display:inline-block; text-align: right;">
+                <img style="width: 5%;" src="{% static 'menu/vegan_1.png' %}">
+            </div>
+            {% endif %}
+            {% if item.celiaco %}
+            <div style="display:inline-block; text-align: right;">
+                <img style="width: 5%;" src="{% static 'menu/celiaco.png' %}">
+            </div>
+            {% endif %}    
+        </div>
+        <div>{{ item.detalle }}</div>
+        <div >{{ item.precio }}</div>    
         {% if user.is_employee or user.is_superuser %}
-        <div>
-            <a href="{% url 'modificar' item.id %}">Modificar</a>
+        <div style="text-align: right;">
             <form method="POST">
-                {% csrf_token %}
-                <div>
-                    <button type="submit" name="eliminar" value="{{ item.id }}">Eliminar</button>
-                </div>
+            <a class="btn btn-sm btn-outline-info" href="{% url 'modificar' item.id %}">Modificar</a>
+            {% csrf_token %}
+            <button class="btn btn-sm btn-outline-info" type="submit" name="eliminar" value="{{ item.id }}">Eliminar</button>
             </form>
         </div>
         {% endif %}
-        {{ item.nombre }}
-        {{ item.descripcion }}
-        {{ item.precio }}
-        {{ item.delivery }}
     </div>
     {% endfor %}
     {% endif %}

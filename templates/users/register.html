@@ -2,8 +2,10 @@
 {% extends "main/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div>
-        <a href="{% url 'cliente_reg' %}">Soy cliente</a>
-        <a href="{% url 'empleado_reg' %}">Soy empleado</a>
+    <div class="container p-0">
+        <div>
+            <a class="btn btn-outline-info m-4" href="{% url 'cliente_reg' %}">Soy cliente</a>
+            <a class="btn btn-outline-info m-4" href="{% url 'empleado_reg' %}">Soy empleado</a>
+        </div>
     </div>
 {% endblock content %}

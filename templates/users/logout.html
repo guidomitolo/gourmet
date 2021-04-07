@@ -1,12 +1,10 @@
 
 {% extends "main/base.html" %}
 {% block content %}
-<div class="content-section">
-    <h2>¡Vuelve pronto!</h2>
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            <a href="{% url 'login' %}">Ingresar nuevamente</a>
-        </small>
+<div style="margin-top: 20px;">
+    <h2 style="padding-top: 20px;">¡Vuelve pronto!</h2>
+    <div class="pt-3">
+        <a class="text-muted" href="{% url 'login' %}">Ingresar nuevamente</a>
     </div>
 </div>
 {% endblock content %}

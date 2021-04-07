@@ -1,21 +1,40 @@
-{% extends "main/base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
-{% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In</legend>
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Login</button>
-            </div>
-        </form>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/docs/4.1/assets/img/favicons/favicon.ico">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="{% static 'users/signin.css' %}" rel="stylesheet">
+  </head>
+  <body class="text-center">
+    <form class="form-signin" method="POST">
+      <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+      <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">
+              <h1 class="h3 mb-3 font-weight-normal">Ingresar</h1>
+            </legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Login</button>
+        </div>
         <div class="border-top pt-3">
+          <small class="text-muted">
+            ¿No tenés tu cuenta? <a class="ml-2" href="{% url 'register' %}">Registrate</a>
+        </small>
+          <div style="padding: 10px;">
             <small class="text-muted">
-                Need An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
+                <a class="ml-2" href="{% url 'home' %}">Volver</a>
             </small>
         </div>
-    </div>
-{% endblock content %}
+      </div>
+      </form>
+  </body>
+</html>
+

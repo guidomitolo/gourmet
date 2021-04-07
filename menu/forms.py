@@ -17,6 +17,7 @@ class EliminarCategoria(forms.ModelForm):
 
     categoria = forms.ModelMultipleChoiceField(
         queryset=Categoria.objects.all(),
+        widget=forms.CheckboxSelectMultiple
     )
 
     def __init__(self, *args, **kwargs):
@@ -41,7 +42,6 @@ class CargarProducto(forms.ModelForm):
 
     categoria = forms.ModelMultipleChoiceField(
         queryset=Categoria.objects.all(),
-        widget=forms.CheckboxSelectMultiple
     )
 
     def __init__(self, *args, **kwargs):

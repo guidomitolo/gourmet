@@ -39,7 +39,7 @@ class Producto(models.Model):
     celiaco = models.BooleanField("Apto celíaco", default=False)
     vegano = models.BooleanField("Vegano", default=False)
     delivery = models.BooleanField("Delivery", default=False)
-    ruta_imagen = models.FileField(upload_to='img/%Y/%m/%d', 
+    ruta_imagen = models.FileField(upload_to='menu/img/%Y/%m/%d', 
                                     # default='defecto/default.png', # sin foto cargada no hay default
                                     blank=True,
                                     null=True)

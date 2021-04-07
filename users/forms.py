@@ -17,11 +17,11 @@ from django.db import transaction
 class RegistroCliente(UserCreationForm):
 
     # agrego una nueva entrada al formulario por defecto
-    first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
-    phone = forms.CharField(required=True)
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    phone = forms.CharField()
     location = forms.CharField()
-    email = forms.EmailField()
+    email = forms.EmailField(required=True)
 
     class Meta:
         model = User
@@ -50,8 +50,8 @@ class RegistroEmpleado(UserCreationForm):
     # agrego una nueva entrada al formulario por defecto
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-    phone = forms.CharField(required=True)
-    email = forms.EmailField()
+    phone = forms.CharField()
+    email = forms.EmailField(required=True)
 
     class Meta:
         model = User
@@ -67,10 +67,12 @@ class RegistroEmpleado(UserCreationForm):
         user.last_name = self.cleaned_data.get('last_name')
         # q tipo de usuario es
         user.is_employee = True
+        # inactivo hasta moderación del admin
+        user.is_active = False
         # creo el usuario
         user.save()
         # asigno permisos de grupo
-        grupo = Group.objects.get(name='empleados')
+        grupo = Group.objects.get(name='empresa')
         user.groups.add(grupo)
         # guardo los atributos especificos
         empleado = Empleado.objects.create(user=user)
