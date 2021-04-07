@@ -1,0 +1,21 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <div>
+        Cambiar cat:
+        <a href="{% url 'modificar_categoria' %}">Ir a categorías</a>
+    </div>
+    Modificar carta
+    <form method="POST">
+        {% csrf_token %}
+        {{ pr_form|crispy }}
+        <div>
+            <button type="submit">Aceptar</button>
+        </div>
+    </form>
+    <a href="{% url 'menu' %}">Volver</a>
+
+    
+    {% endblock content %}
+</div>

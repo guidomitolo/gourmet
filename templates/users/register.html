@@ -1,0 +1,9 @@
+
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div>
+        <a href="{% url 'cliente_reg' %}">Soy cliente</a>
+        <a href="{% url 'empleado_reg' %}">Soy empleado</a>
+    </div>
+{% endblock content %}
