@@ -129,18 +129,8 @@ def profile_admin(request):
             data=request.POST,
             files=request.FILES
         )
-        if request.POST.get('desactivar'):
-            empleado = User.objects.filter(id = request.POST['desactivar']).first()
-            empleado.is_active = False
-            empleado.save()
-            return redirect('perfil_admin')
-        if request.POST.get('activar'):
-            empleado = User.objects.filter(id = request.POST['activar']).first()
-            empleado.is_active = True
-            empleado.save()
-            return redirect('perfil_admin')
         if request.POST.get('actualizar'):
-            if user_form.is_valid() and perfil_form.is_valid() and user_form.is_valid():
+            if user_form.is_valid() and perfil_form.is_valid():
                 user_form.save()
                 perfil_form.save()
                 messages.success(request, f'Has actualizado tus datos')
@@ -152,8 +142,28 @@ def profile_admin(request):
     context = {
         'user_form': user_form,
         'perfil_form': perfil_form,
-        'empleados': User.objects.filter(is_employee = True),
-        'total_clientes': User.objects.filter(is_customer = True).count()
     }
 
     return render(request, 'users/profile_admin.html', context)
+
+
+@login_required
+def panel_control(request):
+    if request.method == 'POST':
+        if request.POST.get('activar'):
+            empleado = User.objects.filter(id = request.POST['activar']).first()
+            empleado.is_active = True
+            empleado.save()
+            return redirect('control')
+        if request.POST.get('desactivar'):
+            empleado = User.objects.filter(id = request.POST['desactivar']).first()
+            empleado.is_active = False
+            empleado.save()
+            return redirect('contrl')
+    context = {
+        'empleados': User.objects.filter(is_employee = True),
+        'total_clientes': User.objects.filter(is_customer = True).count(),
+        'total_empleados': User.objects.filter(is_employee = True).count()
+    }
+
+    return render(request, 'users/panel_control.html', context)

@@ -1,50 +1,29 @@
 {% extends "main/base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
-    <div class="content-section">
-        ADMIN
-        <p>{{ user.username }}</p>
-        <p>{{ user.email }}</p>
-        {% load static %}
-        <img src="{{ user.profile.image.url }}">
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Profile Information</legend>
-                {{ user_form|crispy }}
-                {{ perfil_form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit" name="actualizar" value="actualizar">Update</button>
-            </div>
-        </form>
-        <div>
-            total clientes: {{ total_clientes }}
-        </div>
-        <div>
-            {{ moderar }}
-        </div>
-        <hr>
-        <div>
-            Empleados:
-            {% for empleado in empleados %}
-            <div>
-                <form method="POST">
+    <div class="container mt-4">
+        <h2 class="border-bottom mb-2">Perfil de administrador</h2>
+        <form method="POST" enctype="multipart/form-data" id="form1">
+            <div class="row">
+                <div class="col">
                     {% csrf_token %}
-                    <div>
-                        <button type="submit" name="activar" value="{{ empleado.id }}">Activar</button>
+                    <div class="mt-3">Correo Electrónico</div>
+                    {{ user_form.email }}
+                    <div class="mt-3">Nombre Completo</div>
+                    {{ user_form.first_name }}
+                    <div class="mt-3">Apellido</div>
+                    {{ user_form.last_name }}
+                </div>
+                <div class="col">
+                    <div class="mt-3">Cargar foto</div>
+                    <div class="mt-1">
+                        <img class="mt-3" style="width: 70%;" class="img-thumbnail img-fluid" src="{{ user.profile.image.url }}">
+                        <div class="mt-3">{{ perfil_form.image }}</div>
                     </div>
-                    <div>
-                        <button type="submit" name="desactivar" value="{{ empleado.id }}">Desactivar</button>
-                    </div>
-                </form>
+                </div>
             </div>
-            <div>{{ empleado }}</div>
-            <div>{{ empleado.id }}</div>
-            <div>{{ empleado.first_name }}</div>
-            <div>{{ empleado.last_name }}</div>
-            <div>{{ empleado.is_active }}</div>
-            {% endfor %}
-        </div>
+            <button class="btn btn-outline-info my-3" type="submit" name="actualizar" value="actualizar">Actualizar</button>
+        </form>        
     </div>
 {% endblock content %}

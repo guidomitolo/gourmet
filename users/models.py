@@ -31,7 +31,7 @@ class Profile(models.Model):
     # relacion uno a uno con Usuario. si usuario es eliminado, se elimina el perfil
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # pip install pillow
-    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    image = models.ImageField(default='users/default.jpg', upload_to='profile_pics')
 
     def __str__(self,):
         return f'{self.user.username} Profile'

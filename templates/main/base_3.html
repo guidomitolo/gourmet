@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link href="{% static 'main/img/favicon.css' %}" rel="icon">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+      {% if title %}
+          <title>World's End - Bar - {{ title }}</title>
+      {% else %}
+          <title>World's End - Bar</title>
+      {% endif %}
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <div class="px-4">
+      <header class="blog-header py-3">
+        <div class="row flex-nowrap justify-content-between align-items-center">
+          <div class="col-4 pt-1">
+          </div>
+          <div class="col-4 text-center">
+            <a class="blog-header-logo text-dark" href="#">World End's Bar</a>
+          </div>
+          <div class="col-4 d-flex justify-content-end align-items-center">
+            {% if user.is_authenticated == False %}
+            <a class="text-muted pr-4" href="{% url 'login' %}">Ingresar</a>
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'register' %}">Registrase</a>
+            {% else %}
+            <a class="p-2 text-muted" href="{% url 'logout' %}">Salir</a>
+            {% endif %}
+          </div>
+        </div>
+      </header>
+      <div class="nav-scroller py-1 mb-2">
+        <nav class="nav d-flex justify-content-between">
+          <a class="p-2 text-muted" href="{% url 'home' %}">Home</a>
+          <a class="p-2 text-muted" href="#">Promos</a>
+          <a class="p-2 text-muted" href="#">Reservas</a>
+          <a class="p-2 text-muted" href="{% url 'menu' %}">Menu</a>
+          <a class="p-2 text-muted" href="#">Pedidos</a>
+          <a class="p-2 text-muted" href="{% url 'comentarios' %}">Comentarios</a>
+          {% if user.is_superuser %}
+          <a class="p-2 text-muted" href="{% url 'cargar' %}">Cargar Menu</a>
+          <a class="p-2 text-muted" href="{% url 'perfil_admin' %}">Perfil</a>
+          {% elif user.is_employee %}
+          <a class="p-2 text-muted" href="{% url 'cargar' %}">Cargar Menu</a>
+          <a class="p-2 text-muted" href="{% url 'perfil_empleado' %}">Perfil</a>
+          {% elif user.is_customer %}
+          <a class="p-2 text-muted" href="{% url 'perfil_cliente' %}">Perfil</a>
+          {% endif %}
+        </nav>
+      </div>
+    </div>
+    <main>
+        {% if messages %}
+        {% for message in messages %}
+        <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+          {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+      <!-- FOOTER -->
+      <footer class="px-4 py-4">
+        <p class="float-right"><a href="#">Subir</a></p>
+        <p>&copy; 2021 Shelter, Inc. &middot;
+          <a href="{% url 'about' %}">About</a>
+          &middot;
+          <a href="#">Design</a></p>
+      </footer>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
