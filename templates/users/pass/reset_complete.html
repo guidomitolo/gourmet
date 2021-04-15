@@ -1,0 +1,7 @@
+{% extends "main/base.html" %}
+{% block content %}
+    <div class="alert alert-info">
+        Tu contraseña ha sido reseteada.
+    </div>
+    <a href="{% url 'login' %}">Volver a ingresar</a>
+{% endblock content %}

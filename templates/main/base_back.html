@@ -1,0 +1,141 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'main/css/carousel.css' %}" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">Shelter</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Promos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Reservas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'menu' %}">Menu</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pedidos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'comentarios' %}">Comentarios</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav mt-2 mt-md-0">
+            {% if messages %}
+            <li class="nav-item">
+              {% for message in messages %}
+              <a class="nav-link text-white">{{ message }}</a>
+              {% endfor %}
+            </li>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link">¡Hola {{ user.first_name }}!</a>
+            </li>
+            {% endif %}
+            {% if user.is_superuser %}
+            <li class="nav-item">
+              <a class=nav-link href="{% url 'control' %}">Panel de control</a>
+            </li>
+            <li class="nav-item">
+              <a class=nav-link href="{% url 'cargar' %}">Cargar Menu</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'perfil_admin' %}">Perfil</a>
+            </li>
+            {% elif user.is_employee %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'cargar' %}">Cargar Menu</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'perfil_empleado' %}">Perfil</a>
+            </li>
+            {% elif user.is_customer %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'perfil_cliente' %}">Perfil</a>
+            </li>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Salir</a>
+            </li>
+            {% endif %}
+            {% if user.is_authenticated == False %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Ingresar</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-outline-secondary mx-3" data-toggle="modal" data-target="#reg_modal">Registrase</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main role="main">
+
+
+
+      {% block content %}
+      {% endblock content %}
+
+      <div class="modal fade" id="reg_modal" tabindex="-1" aria-labelledby="usuarios_registro" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="usuarios_registro">Tipo de cuenta</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <a class="btn btn-outline-info m-4" href="{% url 'cliente_reg' %}">Soy cliente</a>
+              <a class="btn btn-outline-info m-4" href="{% url 'empleado_reg' %}">Soy empleado</a>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+    
+      <footer class="container">
+        <p class="float-right"><a href="#">Volver a subir</a></p>
+        <p>&copy; 2020-2021 Shelter, we love birra. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+      </footer>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="{% static 'main/js/popper.min.js' %}"></script>
+    <script src="{% static 'main/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'main/js/holder.min.js' %}"></script>
+  </body>
+</html>

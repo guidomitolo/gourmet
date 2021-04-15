@@ -1,19 +1,16 @@
 {% load static %}
-{% load crispy_forms_tags %}
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="/docs/4.1/assets/img/favicons/favicon.ico">
-    <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="{% static 'users/signin.css' %}" rel="stylesheet">
   </head>
   <body class="text-center">
     <form class="form-signin" method="POST">
       <a href="{% url 'home' %}" >
-        <img class="mb-4" src="{% static 'main/img/logo_shelter_2.png' %}" alt="" width="72" height="72">
+        <img class="mb-4" src="{% static 'main/img/logo_shelter_2.png' %}" alt="" width="150" height="150">
       </a>
       <form method="POST">
         {% csrf_token %}
@@ -21,22 +18,54 @@
             <legend class="border-bottom mb-4">
               <h1 class="h3 mb-3 font-weight-normal">Ingresar</h1>
             </legend>
-            {{ form|crispy }}
+            <div class="my-1">Usuario</div>
+            {{ form.username }}
+            <div class="my-1">Password</div>
+            {{ form.password }}
         </fieldset>
         <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Login</button>
+            <button class="btn btn-outline-info" type="submit">Ingresar</button>
         </div>
-        <div class="border-top pt-3">
-          <small class="text-muted">
-            ¿No tenés tu cuenta? <a class="ml-2" href="{% url 'register' %}">Registrate</a>
+        <small>
+          <a href="{% url 'password_reset' %}">¿Has olvidado tu contraseña?</a>
         </small>
+        <div class="border-top mt-3 pt-3">
+          <small class="text-muted">
+            ¿No tenés tu cuenta?
+          </small>
+          <a type="button" class="btn btn-outline-secondary btn-sm ml-1" data-toggle="modal" data-target="#reg_modal">Registrase</a>
           <div style="padding: 10px;">
             <small class="text-muted">
                 <a class="ml-2" href="{% url 'home' %}">Volver</a>
             </small>
         </div>
       </div>
-      </form>
+    </form>
+
+    <div class="modal fade" id="reg_modal" tabindex="-1" aria-labelledby="usuarios_registro" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="usuarios_registro">Tipo de cuenta</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <a class="btn btn-outline-info m-4" href="{% url 'cliente_reg' %}">Soy cliente</a>
+            <a class="btn btn-outline-info m-4" href="{% url 'empleado_reg' %}">Soy empleado</a>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
   </body>
 </html>
 

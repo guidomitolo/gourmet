@@ -1,8 +1,8 @@
 {% extends "main/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    COMENTARIOS
-    <div class="content-section">
+    <div class="container mt-5">
+        <h2 class="border-bottom mb-2">Dejanos tu comentario</h2>
         <form method="POST">
             {% csrf_token %}
             {{ form|crispy }}

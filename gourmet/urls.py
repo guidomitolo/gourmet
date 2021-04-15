@@ -21,8 +21,7 @@ from django.conf.urls.static import static
 
 # vistas por defecto en django
 from django.contrib.auth import views as auth_views
-# vista de registro de usuario
-from users import views as user_views
+
 
 urlpatterns = [
     # acceso a web administrador
@@ -33,6 +32,9 @@ urlpatterns = [
     path('menu/', include('menu.urls')),
     # acceso al menu
     path('comentarios/', include('comentarios.urls')),
+    # acceso a la tienda
+    path('tienda/', include('tienda.urls')),
+
 
     # acceso al registro de usuarios
     path('register/', include('users.urls')),
@@ -41,5 +43,25 @@ urlpatterns = [
     # acceso a la vista de deslogueo
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
 
+    path('reseteo-pass/',
+        auth_views.PasswordResetView.as_view(
+            template_name='users/pass/reset.html'
+        ),
+        name='password_reset'),
+    path('reseteo-pass/done/',
+         auth_views.PasswordResetDoneView.as_view(
+             template_name='users/pass/instructions.html'
+         ),
+         name='password_reset_done'),
+    path('reseteo-pass-confirm/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name='users/pass/reset_confirm.html'
+         ),
+         name='password_reset_confirm'),
+    path('reseteo-pass-complete/',
+         auth_views.PasswordResetCompleteView.as_view(
+             template_name='users/pass/reset_complete.html'
+         ),
+         name='password_reset_complete'),
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

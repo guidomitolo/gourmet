@@ -17,7 +17,10 @@ def allowed_users(allowed_roles=[]):
             grupo = None
             if request.user.groups.exists():
                 grupo = request.user.groups.all()[0].name
-            if request.user.is_superuser or grupo in allowed_roles:
+
+            if 'admin' and request.user.is_superuser:
+                return view_func(request, *args, **kwargs)
+            elif grupo in allowed_roles:
                 return view_func(request, *args, **kwargs)
             else:
                 messages.warning(request, 'Acceso no autorizado')

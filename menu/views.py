@@ -2,31 +2,57 @@ from users.decorators import allowed_users
 from django.shortcuts import render, redirect
 
 from menu.models import Producto, Categoria
-from menu.forms import CargarProducto, AgregarCategoria, EliminarCategoria
+from menu.forms import CargarProducto, AgregarCategoria, EliminarCategoria, BuscarProducto
 
 from django.contrib.auth.decorators import login_required
 from users.decorators import allowed_users
 
+# busqueda con AJAX
+from django.views.generic import View
+import json
+from django.http import HttpResponse
+
 
 def menu(request):
 
+
     if request.method == 'POST':
-        print(request.POST)
-        Producto.objects.filter(id = request.POST['eliminar']).delete()
-        return redirect("menu")
-
-    productos = Producto.objects.filter(estado='Publicado')
-
-    context = {
+        if request.POST.get('eliminar'):
+            Producto.objects.filter(id = request.POST['eliminar']).delete()
+            return redirect("menu")
+        elif request.POST.get('buscar'):
+            productos = Producto.objects.filter(nombre=request.POST.get("productos"))
+    else:
+        productos = Producto.objects.filter(estado='Publicado')
+    
+    return render(request, 'menu/menu.html', {
         'title': 'Menu',
         'items': productos,
-    }
-    
-    return render(request, 'menu/menu.html', context)
+        'buscar': BuscarProducto()
+        }
+    )
+
+
+class BuscarProducto(View):
+
+    def get(self, request):
+        if request.is_ajax:
+            palabra = request.GET.get('term', '')
+            libro = Producto.objects.filter(nombre__icontains=palabra)
+            results = []
+            for an in libro:
+                data = {}
+                data['label'] = an.nombre
+                results.append(data)
+            data_json = json.dumps(results)
+        else:
+            data_json = "fallo"
+        mimetype = "application/json"
+        return HttpResponse(data_json, mimetype)
 
 
 @login_required
-@allowed_users(allowed_roles=['empleados'])
+@allowed_users(allowed_roles=['empresa'])
 def modificar(request, item_id):
 
     if request.method == 'POST':
@@ -62,7 +88,7 @@ def modificar(request, item_id):
 
 
 @login_required
-@allowed_users(allowed_roles=['empleados'])
+@allowed_users(allowed_roles=['empresa'])
 def cargar_carta(request):
 
     if request.method == 'POST':

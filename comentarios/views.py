@@ -1,4 +1,3 @@
-from django import forms
 from django.shortcuts import redirect, render
 from .forms import ConsultaForm
 from .models import Consulta

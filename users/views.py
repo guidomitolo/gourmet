@@ -10,17 +10,14 @@ from django.contrib import messages
 # importo decorador creado ad-hoc
 # importor metodo para "decorar" clases
 # https://docs.djangoproject.com/en/3.1/topics/class-based-views/intro/#decorating-the-class
-from .decorators import unauthenticated_user
+from .decorators import unauthenticated_user, allowed_users
 from django.utils.decorators import method_decorator
 # importar requisito de logueo
 from django.contrib.auth.decorators import login_required
 # importo modelo de ususario actual para pedir lista de empleados
 from django.contrib.auth import get_user_model
-User = get_user_model()
 
-@unauthenticated_user
-def register(request):
-    return render(request, 'users/register.html')
+User = get_user_model()
 
 
 @method_decorator(unauthenticated_user, name='dispatch')
@@ -28,7 +25,7 @@ class registro_cliente(SuccessMessageMixin, CreateView):
     form_class = RegistroCliente
     template_name = "users/cliente_reg.html"
     success_url = '/'
-    success_message = "%(first_name)s, te has registrado con éxito"
+    success_message = "¡%(first_name)s, ya podés ingresar!"
 
     def validate(self, form):
         form.save()
@@ -39,7 +36,7 @@ class registro_empleado(SuccessMessageMixin, CreateView):
     form_class = RegistroEmpleado
     template_name = "users/empleado_reg.html"
     success_url = '/'
-    success_message = "%(first_name)s, te has registrado con éxito"
+    success_message = "¡%(first_name)s, ya podés ingresar!"
 
     def validate(self, form):
         form.save()
@@ -82,6 +79,7 @@ def profile_cliente(request):
 
 
 @login_required
+@allowed_users(allowed_roles=['empresa'])
 def profile_empleado(request):
     if request.method == 'POST':
         user_form = ActualizarUsuario(
@@ -118,6 +116,7 @@ def profile_empleado(request):
 
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def profile_admin(request):
     if request.method == 'POST':
         user_form = ActualizarUsuario(
@@ -148,6 +147,7 @@ def profile_admin(request):
 
 
 @login_required
+@allowed_users(allowed_roles=['admin'])
 def panel_control(request):
     if request.method == 'POST':
         if request.POST.get('activar'):

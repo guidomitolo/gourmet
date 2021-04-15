@@ -35,29 +35,3 @@ class Profile(models.Model):
 
     def __str__(self,):
         return f'{self.user.username} Profile'
-
-
-def save(self, *args, **kwargs):
-    ## Clean previous file
-    try:
-        this = Profile.objects.get(id=self.id)
-        if this.image != self.image:
-            this.image.delete(save=False)
-    except: pass
-
-    super(Profile, self).save(*args, **kwargs)
-
-    if img.height > 300 or img.width > 300:
-        output_size = (300, 300)
-        img.thumbnail(output_size)
-        img.save(self.image.path)
-
-##############################3333
-# creo nuevo modelo para poder listar usuarios en formulario
-# class EmpleadosRegistrados(models.Model):
-    
-#     # user = models.OneToOneField(Empleado.user.username, on_delete=models.CASCADE, primary_key=True)
-#     active = models.OneToOneField(Empleado.user.is_active, on_delete=models.CASCADE, primary_key=True)
-
-#     def __str__(self):
-#         return f'{self.user.username}'

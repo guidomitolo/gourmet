@@ -48,8 +48,8 @@ class RegistroCliente(UserCreationForm):
 class RegistroEmpleado(UserCreationForm):
 
     # agrego una nueva entrada al formulario por defecto
-    first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
+    first_name = forms.CharField()
+    last_name = forms.CharField()
     phone = forms.CharField()
     email = forms.EmailField(required=True)
 
