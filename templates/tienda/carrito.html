@@ -10,8 +10,8 @@
                     <br>
                     <table class="table">
                         <tr>
-                            <th><h5>Items: <strong>3</strong></h5></th>
-                            <th><h5>Total:<strong> $42</strong></h5></th>
+                            <th><h5>Total: <strong>ARS {{ orden.total_orden_precio }}</strong></h5></th>
+                            <th><h5>Productos:<strong>{{ orden.total_orden_cantidad }}</strong></h5></th>
                             <th>
                                 <a style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
                             </th>
@@ -29,21 +29,22 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for item in items %}
                             <tr>
                                 <td>Imagen</td>
-                                <td>Milanesa</td>
-                                <td>350$</td>
+                                <td>{{ item.producto.nombre }}</td>
+                                <td>{{ item.producto.precio }}</td>
                                 <td>
                                     <div>
-                                        <p>2</p>
-                                        <div>
-                                            <img width="10" src="{% static  'tienda/img/flecha_arriba.png' %}">
-                                            <img width="10" src="{% static  'tienda/img/flecha_abajo.png' %}">
-                                        </div>
+                                        <p>{{ item.cantidad }}
+                                        <img class="update-cart" data-product="{{ item.producto.id }}" data-action="add" width="10" src="{% static  'tienda/img/flecha_arriba.png' %}">
+                                        <img class="update-cart" data-product="{{ item.producto.id }}" data-action="remove" width="10" src="{% static  'tienda/img/flecha_abajo.png' %}">
+                                        </p>
                                     </div>                              
                                 </td>
-                                <td>350$</td>
+                                <td>{{ item.total_precio }}</td>
                             </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

@@ -19,17 +19,11 @@
                 {{ item.detalle }}
                 {{ item.categoria }}
             </div>
-            {% if user.is_superuser or user.is_employee%}
-            <form method="POST">
-                <a class="btn btn-sm btn-outline-info" href="{% url 'modificar' item.id %}">Modificar</a>
-                {% csrf_token %}
-                <button class="btn btn-sm btn-outline-info" type="submit" name="eliminar" value="{{ item.id }}">Eliminar</button>
-            </form>
-            {% else %}
-                <button class="btn btn-sm btn-outline-success">Ordenar</button>
-            {% endif %}
+            <button data-product="{{item.id}}" data-action="add" class="btn btn-sm btn-outline-secondary add-btn update-cart">Agregar</button>
+            <button class="btn btn-sm btn-outline-success">Ver</button>
         </div>
         <div class="col-2">
+            <b>{{ item.precio }} ARS</b><br><br>
             {% if item.delivery %}
                 <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/delivery.png' %}" width="25">
             {% endif %}

@@ -11,6 +11,18 @@ class Orden(models.Model):
     completado = models.BooleanField(default=False, null=True, blank=False)
     trans_id = models.CharField(max_length=200, null=True)
 
+    @property
+    def total_orden_precio(self):
+        total_productos = self.ordenarproducto_set.all()
+        total = sum([item.total_precio for item in total_productos])
+        return total
+
+    @property
+    def total_orden_cantidad(self):
+        total_productos = self.ordenarproducto_set.all()
+        total = sum([item.cantidad for item in total_productos])
+        return total
+
     def __str__(self):
         return f"{self.id}"
 
@@ -23,8 +35,14 @@ class OrdenarProducto(models.Model):
     # fecha agregada a la orden
     fecha_agregada = models.DateTimeField(auto_now_add=True)
 
+    # construyo un atributo para el precio total por producto seleccionado
+    @property
+    def total_precio(self):
+        total = self.producto.precio * self.cantidad
+        return total    
+
     def __str__(self):
-        return f"{self.id}"
+        return f"{self.producto.nombre}"
 
 
 class Despacho(models.Model):
