@@ -11,7 +11,7 @@
                     <table class="table">
                         <tr>
                             <th><h5>Total: <strong>ARS {{ orden.total_orden_precio }}</strong></h5></th>
-                            <th><h5>Productos:<strong>{{ orden.total_orden_cantidad }}</strong></h5></th>
+                            <th><h5>Productos: <strong>{{ orden.total_orden_cantidad }}</strong></h5></th>
                             <th>
                                 <a style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
                             </th>
@@ -19,6 +19,7 @@
                     </table>
                     <br>
                     <table class="table">
+                        {% csrf_token %}
                         <thead>
                             <tr>
                                 <th></th>
@@ -31,7 +32,9 @@
                         <tbody>
                             {% for item in items %}
                             <tr>
-                                <td>Imagen</td>
+                                <td class="text-center">
+                                    <img width="60" class="img-fluid max-width: 100% rounded" src="/media/{{ item.producto.ruta_imagen }}">
+                                </td>
                                 <td>{{ item.producto.nombre }}</td>
                                 <td>{{ item.producto.precio }}</td>
                                 <td>

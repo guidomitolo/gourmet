@@ -3,6 +3,8 @@ from menu.models import Producto
 from menu.forms import BuscarProducto
 from .models import Orden, OrdenarProducto, Despacho
 
+from django.contrib.auth.decorators import login_required
+
 from django.http import JsonResponse
 
 import json
@@ -11,29 +13,19 @@ import json
 import datetime
 
 
-
+@login_required
 def tienda(request):
 
-    if request.user.is_authenticated:
-        cliente = request.user.cliente
-        orden, creado = Orden.objects.get_or_create(cliente=cliente, completado=False)
-        items = orden.ordenarproducto_set.all()
-        carrito_items = orden.total_orden_cantidad
-    else:
-        orden = {"total_orden_precio": 0, "total_orden_cantidad": 0}
-        items = []
-        carrito_items = orden["total_orden_cantidad"]
-
-    # if request.method == 'POST':
-    #     if request.POST.get('eliminar'):
-    #         Producto.objects.filter(id = request.POST['eliminar']).delete()
-    #         return redirect("menu")
-    #     elif request.POST.get('buscar'):
-    #         productos = Producto.objects.filter(nombre=request.POST.get("productos"))
-    # else:
-    #     productos = Producto.objects.filter(estado='Publicado')
+    cliente = request.user.cliente
+    orden, creado = Orden.objects.get_or_create(cliente=cliente, completado=False)
+    items = orden.ordenarproducto_set.all()
+    carrito_items = orden.total_orden_cantidad
 
     productos = Producto.objects.filter(estado='Publicado')
+
+    if request.method == 'POST':
+        if request.POST.get('buscar'):
+            productos = Producto.objects.filter(nombre=request.POST.get("productos"))
 
     return render(request, 'tienda/tienda.html', {
         'title': 'Tienda',
@@ -43,17 +35,13 @@ def tienda(request):
         }
     )
 
+@login_required
 def carrito(request):
 
-    if request.user.is_authenticated:
-        cliente = request.user.cliente
-        orden, creado = Orden.objects.get_or_create(cliente=cliente, completado=False)
-        items = orden.ordenarproducto_set.all()
-        carrito_items = orden.total_orden_cantidad
-    else:
-        orden = {"total_orden_precio": 0, "total_orden_cantidad": 0}
-        items = []
-        carrito_items = orden["total_orden_cantidad"]
+    cliente = request.user.cliente
+    orden, creado = Orden.objects.get_or_create(cliente=cliente, completado=False)
+    items = orden.ordenarproducto_set.all()
+    carrito_items = orden.total_orden_cantidad
 
     context = {
         "title":"Carrito",
@@ -64,17 +52,13 @@ def carrito(request):
 
     return render(request, "tienda/carrito.html", context)
 
+@login_required
 def checkout(request):
 
-    if request.user.is_authenticated:
-        cliente = request.user.cliente
-        orden, creado = Orden.objects.get_or_create(cliente=cliente, completado=False)
-        items = orden.ordenarproducto_set.all()
-        carrito_items = orden.total_orden_cantidad
-    else:
-        orden = {"total_orden_precio": 0, "total_orden_cantidad": 0}
-        items = []
-        carrito_items = orden["total_orden_cantidad"]
+    cliente = request.user.cliente
+    orden, creado = Orden.objects.get_or_create(cliente=cliente, completado=False)
+    items = orden.ordenarproducto_set.all()
+    carrito_items = orden.total_orden_cantidad
 
     context = {
         "title":"Checkout",
@@ -85,7 +69,7 @@ def checkout(request):
     
     return render(request, "tienda/checkout.html", context)
 
-
+@login_required
 def actualizar_producto(request):
     data = json.loads(request.body)
     productId = data['productId']
@@ -109,31 +93,26 @@ def actualizar_producto(request):
 
     return JsonResponse("El producto fue agregado", safe=False)
 
-
+@login_required
 def procesar_orden(request):
     data = json.loads(request.body)
     trans_id = datetime.datetime.now().timestamp()
+    cliente = request.user.cliente
+    orden, creado = Orden.objects.get_or_create(cliente=cliente, completado=False)
+    total = float(data['form']['total'])
+    orden.trans_id = trans_id
 
-    if request.user.is_authenticated:
-        cliente = request.user.cliente
-        orden, creado = Orden.objects.get_or_create(cliente=cliente, completado=False)
-        total = float(data['form']['total'])
-        orden.trans_id = trans_id
+    if total == orden.total_orden_precio:
+        orden.completado = True
+    orden.save()
 
-        if total == orden.total_orden_precio:
-            orden.completado = True
-        orden.save()
-
-        Despacho.objects.create(
-            cliente = cliente,
-            orden = orden,
-            direccion = data['despacho']['address'],
-            ciudad = data['despacho']['city'],
-            estado = data['despacho']['state'],
-            postal = data['despacho']['zipcode'],
-        )
-
-    else:
-        print("user is not logged in")
+    Despacho.objects.create(
+        cliente = cliente,
+        orden = orden,
+        direccion = data['despacho']['address'],
+        ciudad = data['despacho']['city'],
+        estado = data['despacho']['state'],
+        postal = data['despacho']['zipcode'],
+    )
 
     return JsonResponse("Payment complete", safe=False)

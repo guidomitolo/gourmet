@@ -146,3 +146,9 @@ def cargar_carta(request):
         del_cat = EliminarCategoria()
     
     return render(request, 'menu/cargar.html', {'pr_form': pr_form, 'del_cat': del_cat ,'add_cat': add_cat})
+
+def promos(request):
+    context = {
+        "title": "Promos"
+    }
+    return render(request, "main/promos.html", context)

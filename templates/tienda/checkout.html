@@ -19,7 +19,7 @@
 						
 						<div id="shipping-info">
 							<hr>
-							<p>Shipping Information:</p>
+							<p>Información de envío</p>
 							<hr>
 							<div class="form-field">
 								<input class="form-control" type="text" name="address" placeholder="Address..">
@@ -45,20 +45,20 @@
 	
 				<br>
 				<div class="box-element hidden" id="payment-info">
-					<small>Paypal Options</small>
-					<button id="make-payment">Make payment</button>
+					<small>Opciones de Pago</small>
+					<button class="btn btn-outline-dark" id="make-payment">Pagar</button>
 				</div>
 				
 			</div>
 
 			<div class="col-lg-6">
 				<div class="box-element">
-					<a  class="btn btn-outline-dark" href="{% url 'carrito' %}">&#x2190; Volver al carrito</a>
+					<a class="btn btn-outline-dark" href="{% url 'carrito' %}">&#x2190; Volver al carrito</a>
 					<hr>
-					<h3>Order Summary</h3>
+					<h3>Resumen del pedido</h3>
 					<hr>
 					{% for item in items %}
-					<div class="border">
+					<div class="border p-1 m-1">
 						{% if item.producto.ruta_imagen %}
 						<div><img class="img-fluid rounded"  src="/media/{{ item.producto.ruta_imagen }}" width="120"></div>
 						{% else %}
@@ -66,7 +66,7 @@
 						{% endif %}
 						<div><p>{{ item.producto.nombre }}</p></div>
 						<div><p>ARS {{ item.producto.precio }}</p></div>
-						<div><p>{{ item.producto.cantidad }}</p></div>
+						<div><p>Unidades: {{ item.cantidad }}</p></div>
 					</div>
 					{% endfor %}
 					<h5>Items: {{ orden.total_orden_cantidad }}</h5>
@@ -89,7 +89,6 @@
 	form.addEventListener('submit', function(e){
 		e.preventDefault()
 		console.log('Form Submitted...')
-		console.log(csrftoken_2)
 		document.getElementById('form-button').classList.add("hidden");
 		document.getElementById('payment-info').classList.remove("hidden");
 	})

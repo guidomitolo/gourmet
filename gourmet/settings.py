@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     # tienda app
     'tienda.apps.TiendaConfig',
     # REST API lib
-    "rest_framework"
+    "rest_framework",
+    'crispy_forms', # pip install django-crispy-forms    
 ]
 
 MIDDLEWARE = [

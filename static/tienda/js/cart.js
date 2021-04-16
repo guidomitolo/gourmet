@@ -17,23 +17,26 @@ for (i = 0; i < updateBtns.length; i++) {
 }
 
 
+var csrftoken_2 = document.getElementsByTagName("input")[0].value
+
 function updateUserOrder(productId, action){
 	console.log('User is authenticated, sending data...')
+	console.log(csrftoken_2)
 
-		var url = 'actualizado'
+	var url = 'actualizado'
 
-		fetch(url, {
-			method:'POST',
-			headers:{
-				'Content-Type':'application/json',
-				'X-CSRFToken':csrftoken,
-			}, 
-			body:JSON.stringify({'productId':productId, 'action':action})
-		})
-		.then((response) => {
-		   return response.json();
-		})
-		.then((data) => {
-		    location.reload()
-		});
+	fetch(url, {
+		method:'POST',
+		headers:{
+			'Content-Type':'application/json',
+			'X-CSRFToken':csrftoken_2,
+		}, 
+		body:JSON.stringify({'productId':productId, 'action':action})
+	})
+	.then((response) => {
+		return response.json();
+	})
+	.then((data) => {
+		location.reload()
+	});
 }

@@ -22,4 +22,6 @@ urlpatterns = [
 
     # vista de la busqueda con AJAX
     path('buscar/', views.BuscarProducto.as_view(), name='buscar'),
+    # vista de la busqueda con AJAX
+    path('promos/', views.promos, name='promos'),
 ]
