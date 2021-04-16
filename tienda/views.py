@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from menu.models import Producto
 from menu.forms import BuscarProducto
-from .models import Orden, OrdenarProducto
+from .models import Orden, OrdenarProducto, Despacho
 
 from django.http import JsonResponse
 
 import json
+
+
+import datetime
 
 
 
@@ -105,3 +108,32 @@ def actualizar_producto(request):
         ordenarItem.delete()
 
     return JsonResponse("El producto fue agregado", safe=False)
+
+
+def procesar_orden(request):
+    data = json.loads(request.body)
+    trans_id = datetime.datetime.now().timestamp()
+
+    if request.user.is_authenticated:
+        cliente = request.user.cliente
+        orden, creado = Orden.objects.get_or_create(cliente=cliente, completado=False)
+        total = float(data['form']['total'])
+        orden.trans_id = trans_id
+
+        if total == orden.total_orden_precio:
+            orden.completado = True
+        orden.save()
+
+        Despacho.objects.create(
+            cliente = cliente,
+            orden = orden,
+            direccion = data['despacho']['address'],
+            ciudad = data['despacho']['city'],
+            estado = data['despacho']['state'],
+            postal = data['despacho']['zipcode'],
+        )
+
+    else:
+        print("user is not logged in")
+
+    return JsonResponse("Payment complete", safe=False)

@@ -7,6 +7,7 @@
 			<div class="col-lg-6">
 				<div class="box-element" id="form-wrapper">
 					<form id="form">
+						{% csrf_token %}
 						<div id="user-info">
 							<div class="form-field">
 								<input required class="form-control" type="text" name="name" placeholder="Name..">
@@ -41,7 +42,7 @@
 						<input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
 					</form>
 				</div>
-
+	
 				<br>
 				<div class="box-element hidden" id="payment-info">
 					<small>Paypal Options</small>
@@ -80,12 +81,81 @@
 <script type="text/javascript">
 
 	var form = document.getElementById('form')
+
+
+	var csrftoken_2 = document.getElementsByTagName("input")[0].value
+
+
 	form.addEventListener('submit', function(e){
 		e.preventDefault()
 		console.log('Form Submitted...')
+		console.log(csrftoken_2)
 		document.getElementById('form-button').classList.add("hidden");
-		// document.getElementById('payment-info').classList.remove("hidden");
+		document.getElementById('payment-info').classList.remove("hidden");
 	})
+
+	document.getElementById('make-payment').addEventListener('click', function(e){
+	    	submitFormData()
+	    })
+
+	var total = "{{ orden.total_orden_precio }}"
+
+	function submitFormData(){
+		console.log('Payment button clicked')
+
+		var userFormData = {
+			'name':null,
+			'email':null,
+			'total':total,
+		}
+
+		var despachoInfo = {
+			'address':null,
+			'city':null,
+			'state':null,
+			'zipcode':null,
+		}
+
+		despachoInfo.address = form.address.value
+		despachoInfo.city = form.city.value
+		despachoInfo.state = form.state.value
+		despachoInfo.zipcode = form.zipcode.value
+
+		if (user == 'AnonymousUser'){
+			userFormData.name = form.name.value
+			userFormData.email = form.email.value
+		}
+
+		console.log('Shipping Info:', despachoInfo)
+		console.log('User Info:', userFormData)
+
+		var url = "procesando"
+		fetch(url, {
+			method:'POST',
+			headers:{
+				'Content-Type':'applicaiton/json',
+				'X-CSRFToken':csrftoken_2,
+			}, 
+			body:JSON.stringify({'form':userFormData, 'despacho':despachoInfo}),
+			
+		})
+		.then((response) => response.json())
+		.then((data) => {
+			console.log('Success:', data);
+			alert('Transaction completed');  
+
+			cart = {}
+			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
+			window.location.href = "{% url 'tienda' %}"
+
+			})
+	}
+
+	if (user != "AnonymousUser"){
+		document.getElementById("user-info").innerHTML = ""
+	}
+
 
 </script>
 {% endblock content %}

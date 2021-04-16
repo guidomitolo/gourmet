@@ -8,7 +8,10 @@
     <meta name="author" content="">
     <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
     <link href="{% static 'main/css/carousel.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'tienda/css/tienda.css' %}"></link>
+
     <script type="text/javascript">
       var user = "{{ request.user }}"
       function getCookie(name) {
@@ -116,8 +119,6 @@
 
     <main role="main">
 
-
-
       {% block content %}
       {% endblock content %}
 
@@ -143,11 +144,11 @@
 
       <hr class="featurette-divider">
 
-    
       <footer class="container">
         <p class="float-right"><a href="#">Volver a subir</a></p>
         <p>&copy; 2020-2021 Shelter, we love birra. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
       </footer>
+
     </main>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
