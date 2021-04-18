@@ -1,12 +1,10 @@
+
 version: '3'
 
 services:
   gourmet:
-    restart: always
     build: .
-    expose:
-      - "8000"
     env_file: .env
-    environment:
-      DEBUG: 'true'
     command: python3 manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000

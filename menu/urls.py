@@ -15,13 +15,11 @@ urlpatterns = [
     path('producto', ProductoViewSet.as_view({'get':'list'}), name='api_prod'),
     path('categoria', ProductoViewSet.as_view({'get':'list'}), name='api_cat'),
 
-    # home view = sitio raíz
     path('', views.menu, name='menu'),
     path('cargar', views.cargar_carta, name='cargar'),
     path('<int:item_id>/modificar/', views.modificar, name='modificar'),
 
     # vista de la busqueda con AJAX
     path('buscar/', views.BuscarProducto.as_view(), name='buscar'),
-    # vista de la busqueda con AJAX
     path('promos/', views.promos, name='promos'),
 ]

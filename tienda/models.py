@@ -7,10 +7,11 @@ class Orden(models.Model):
     # SET_NULL no borrar el cliente
     cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, blank=True, null=True)
     fecha_orden = models.DateTimeField(auto_now_add=True)
-    # Si "completado" es falso, se puede seguir comprando
+    # Si "completado" es falso se puede seguir comprando
     completado = models.BooleanField(default=False, null=True, blank=False)
     trans_id = models.CharField(max_length=200, null=True)
 
+    # construyo atributo para obtener totales
     @property
     def total_orden_precio(self):
         total_productos = self.ordenarproducto_set.all()

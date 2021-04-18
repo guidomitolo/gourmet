@@ -6,7 +6,7 @@ class ConsultaForm(ModelForm):
     class Meta:
         model = Consulta
         fields = ['nombre', 'mail', 'descripcion']
-        # one error message for each field
+        # todos los campos son requeridos
         error_messages = {
             'nombre': {
                 'required': ("Se debe agregar un nombre de producto"),

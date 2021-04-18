@@ -28,7 +28,6 @@
             <div class="mb-4">
                 <h5 class="mb-3"><b>{{ item.nombre }}</b></h5>
                 {{ item.detalle }}
-                {{ item.categoria }}
             </div>
             {% if user.is_superuser or user.is_employee%}
             <form method="POST">

@@ -11,7 +11,6 @@ def comentarios(request):
             mail = form.cleaned_data["mail"]
             descripcion = form.cleaned_data["descripcion"]
 
-            # ############MESAJE DIRIGIDO AL SITIO #####################
             subject = "Nueva consulta de " + nombre
             desde = mail
             destino = ["info@dominio.org"]
@@ -19,8 +18,6 @@ def comentarios(request):
                 """</h2>""" + """<br/><h2>Mail :""" + mail + """</h2>"""+ \
                 """<hr/><p>"""+ descripcion + """</p>"""
             #send_mail(subject, mensaje, desde, destino, html_message=mensaje_html, fail_silently=False)
-
-            # ############MESAJE DIRIGIDO AL USUARIO #####################
 
             subject2 = "Consulta enviada satisfactoriamente - EMPRESA"
             desde2 = "info@dominio.org"
