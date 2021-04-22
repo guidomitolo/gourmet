@@ -8,6 +8,10 @@ from gourmet import settings
 # importo datetime para guardar fecha de creación de la entrada
 import datetime
 
+
+from PIL import Image
+
+
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, db_index=True)
@@ -55,3 +59,15 @@ class Producto(models.Model):
 
     def __str__(self):
         return f'{self.nombre}'
+
+
+    def save(self, *args, **kwargs):
+
+        super(Producto, self).save(*args, **kwargs)
+
+        img = Image.open(self.ruta_imagen.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300,300)
+            img.thumbnail(output_size)
+            img.save(self.ruta_imagen.path)
