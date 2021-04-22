@@ -3,7 +3,6 @@ from django.db import models
 from django.utils.html import format_html
 
 # importo User para relacionarlo con el modelo Producto
-from django.contrib.auth.models import User
 from gourmet import settings
 
 # importo datetime para guardar fecha de creación de la entrada

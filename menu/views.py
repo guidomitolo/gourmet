@@ -16,19 +16,24 @@ from django.http import HttpResponse
 def menu(request):
 
 
+    # cat[0].producto_set.all()[0]
+
     if request.method == 'POST':
         if request.POST.get('eliminar'):
             Producto.objects.filter(id = request.POST['eliminar']).delete()
             return redirect("menu")
         elif request.POST.get('buscar'):
             productos = Producto.objects.filter(nombre=request.POST.get("productos"))
+            categorias = Categoria.objects.all()
     else:
-        productos = Producto.objects.filter(estado='Publicado')
+        categorias = Categoria.objects.all()
+        productos = None
     
     return render(request, 'menu/menu.html', {
         'title': 'Menu',
-        'items': productos,
-        'buscar': BuscarProducto()
+        'buscar': BuscarProducto(),
+        'categorias': categorias,
+        'productos': productos
         }
     )
 
