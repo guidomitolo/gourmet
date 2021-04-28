@@ -33,13 +33,13 @@
             <div class="col-2">
                 <b>{{ item.precio }} ARS</b><br><br>
                 {% if item.delivery %}
-                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/delivery.png' %}" width="25">
+                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/delivery.png' %}" width="25">
                 {% endif %}
                 {% if item.vegano %}
-                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/vegan_1.png' %}" width="25">
+                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/vegan_1.png' %}" width="25">
                 {% endif %}
                 {% if item.celiaco %}
-                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/celiaco.png' %}" width="25">
+                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/celiaco.png' %}" width="25">
                 {% endif %}
             </div>
             <div class="col-3 text-center">
