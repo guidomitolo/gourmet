@@ -12,14 +12,15 @@
     background-color: #dee2e6a4;
 }
 
-.arrows {
+.up {
     float:right;
-    margin-top: 3px;
+    margin-top: 7px;
 }
 
-
 .down {
+    float:right;
 	display: none;
+    margin-top: 7px;
 }
 
 .food-box{

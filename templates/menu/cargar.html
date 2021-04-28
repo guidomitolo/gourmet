@@ -1,86 +1,90 @@
-{% extends "main/base.html" %}
+{% extends "main/plantilla.html" %}
 {% block content %}
-<div class="container mt-5">
-    <h2 class="border-bottom my-5">Cargar Menú</h2>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col-7">
-
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Categoria</span>
-                    </div>
-                    {{ pr_form.categoria }}
-                    <button type="button" class="btn btn-info btn-lg my-auto mx-2" data-toggle="modal" data-target="#myModal">+</button>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Nombre</span>
-                    </div>
-                    {{ pr_form.nombre }}
-                </div>
-
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Detalle</span>
-                    </div>
-                    {{ pr_form.detalle }}
-                    </div>
-            </div>
-            <div class="col-5">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            {{ pr_form.celiaco }}
-                        </div>
-                    </div>
-                    <p type="text" class="form-control">Apto celíaco</p>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            {{ pr_form.vegano }}
-                        </div>
-                    </div>
-                    <p type="text" class="form-control">Vegano</p>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            {{ pr_form.delivery }}
-                        </div>
-                    </div>
-                    <p type="text" class="form-control">Delivery / Take Away</p>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Precio</span>
-                    </div>
-                    {{ pr_form.precio }}
-                    <div class="input-group-append">
-                        <span class="input-group-text">ARS</span>
-                    </div>
-                    </div>
-
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">Estado</label>
-                    </div>
-                    {{ pr_form.estado }}
-                </div>
-
-                <div class="border rounded my-3">
-                    <span class="input-group-text mb-3">Subir imagen</span>
-                    <div class="m-3">{{ pr_form.ruta_imagen }}</div>
-                </div>
-                
-            </div>
+<section class="page-section bg-light">
+    <div class="container">
+        <div class="border-bottom mb-5">
+            <h2 class="section-heading text-uppercase text-left mb-2">Cargar</h2>
         </div>
-        <div class="my-3">
-            <button class="btn btn-info btn-lg" type="submit" value='cargar' name="cargar">Cargar</button>
-        </div>
-    </form>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-7">
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Categoria</span>
+                        </div>
+                        {{ pr_form.categoria }}
+                        <button type="button" class="btn btn-info btn-lg my-auto mx-2" data-toggle="modal" data-target="#myModal">+</button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Nombre</span>
+                        </div>
+                        {{ pr_form.nombre }}
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Detalle</span>
+                        </div>
+                        {{ pr_form.detalle }}
+                        </div>
+                </div>
+                <div class="col-5">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                {{ pr_form.celiaco }}
+                            </div>
+                        </div>
+                        <p type="text" class="form-control">Apto celíaco</p>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                {{ pr_form.vegano }}
+                            </div>
+                        </div>
+                        <p type="text" class="form-control">Vegano</p>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                {{ pr_form.delivery }}
+                            </div>
+                        </div>
+                        <p type="text" class="form-control">Delivery / Take Away</p>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Precio</span>
+                        </div>
+                        {{ pr_form.precio }}
+                        <div class="input-group-append">
+                            <span class="input-group-text">ARS</span>
+                        </div>
+                        </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Estado</label>
+                        </div>
+                        {{ pr_form.estado }}
+                    </div>
+
+                    <div class="border rounded my-3">
+                        <span class="input-group-text mb-3">Subir imagen</span>
+                        <div class="m-3">{{ pr_form.ruta_imagen }}</div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="my-3">
+                <button class="btn btn-primary text-uppercase mt-2" type="submit" value='cargar' name="cargar">Cargar</button>
+            </div>
+        </form>
+    </div>
 
 
     <div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -123,6 +127,5 @@
             </div>
         </div>
     </div>
-
-</div>
+</section>
 {% endblock content %}

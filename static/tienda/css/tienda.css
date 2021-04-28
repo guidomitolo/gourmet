@@ -21,6 +21,11 @@
 	background-color: #4f868c!important;
 } */
 
+#user-icon{
+	width:30px;
+	display: inline-block;
+}
+
 #cart-icon{
 	width:25px;
 	display: inline-block;

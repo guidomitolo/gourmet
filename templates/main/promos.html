@@ -1,25 +1,27 @@
-{% extends "main/base.html" %}
+{% extends "main/plantilla.html" %}
 {% load static %}
 {% block content %}
-<div class="container mt-4">
-    <div class="border-bottom my-5">
-                <h2 class="text-left text-white">Nuestras Promos</h2>
+<section class="page-section bg-light">
+    <div class="container">
+        <div class="border-bottom mb-5">
+            <h2 class="section-heading text-uppercase text-left">Nuestras Promos</h2>
+        </div>
+        <div class="row text-center">
+            <div class="col-6 p-1">
+                <img src="{% static 'main/img/promo_1.jpg' %}" width="450">
+            </div>
+            <div class="col-6 p-1">
+                <img src="{% static 'main/img/promo_2.jpg' %}" width="450">
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-6 p-1">
+                <img src="{% static 'main/img/promo_3.jpg' %}" width="450">
+            </div>
+            <div class="col-6 p-1">
+                <img src="{% static 'main/img/promo_4.jpg' %}" width="450">
+            </div>
+        </div>
     </div>
-    <div class="row text-center">
-        <div class="col-6 p-1">
-            <img src="{% static 'main/img/promo_1.jpg' %}" width="450">
-        </div>
-        <div class="col-6 p-1">
-            <img src="{% static 'main/img/promo_2.jpg' %}" width="450">
-        </div>
-    </div>
-    <div class="row text-center">
-        <div class="col-6 p-1">
-            <img src="{% static 'main/img/promo_3.jpg' %}" width="450">
-        </div>
-        <div class="col-6 p-1">
-            <img src="{% static 'main/img/promo_4.jpg' %}" width="450">
-        </div>
-    </div>
-</div>
+</section>
 {% endblock content %}

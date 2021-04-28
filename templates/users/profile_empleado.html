@@ -1,7 +1,8 @@
-{% extends "main/base.html" %}
+{% extends "main/plantilla.html" %}
 {% block content %}
-    <div class="container mt-5">
-        <h2 class="border-bottom mb-2">Perfil del empleado</h2>
+<section class="page-section bg-light">
+    <div class="container">
+        <h2 class="section-heading text-uppercase text-left mb-2">Perfil empleado</h2>
         <form method="POST" enctype="multipart/form-data" id="form1">
             <div class="row">
                 <div class="col">
@@ -22,7 +23,8 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-outline-info my-3" type="submit" name="actualizar" value="actualizar">Actualizar</button>
+            <button class="btn btn-primary text-uppercase mt-2" type="submit" name="actualizar" value="actualizar">Actualizar</button>
         </form>        
     </div>
+</section>
 {% endblock content %}

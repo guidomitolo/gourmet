@@ -30,12 +30,9 @@ urlpatterns = [
     path('', include('main.urls')),
     # acceso al menu
     path('menu/', include('menu.urls')),
-    # acceso al menu
-    path('comentarios/', include('comentarios.urls')),
     # acceso a la tienda
     path('tienda/', include('tienda.urls')),
-
-
+    
     # acceso al registro de usuarios
     path('register/', include('users.urls')),
     # acceso al logueo de usuarios

@@ -1,152 +1,136 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Shelter, we love birra</title>
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'main/css/styles.css' %}" rel="stylesheet" />
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
     
-    <link href="{% static 'main/css/carousel.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'tienda/css/tienda.css' %}"></link>
-    <link rel="stylesheet" href="{% static 'menu/css/menu.css' %}"></link>
-
-    <script type="text/javascript">
-      var user = "{{ request.user }}"
-    </script>
-
-  </head>
-  {% if "promos" in request.path %}
-  <body style="background-color: black;">
-  {% else %}
-  <body>
-  {% endif %}
-
-    <header>
-
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="{% url 'home' %}">Shelter</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'home' %}">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'promos' %}">Promos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'menu' %}">Menu</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'tienda' %}">Tienda</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'comentarios' %}">Comentarios</a>
-            </li>
-          </ul>
-          <ul class="navbar-nav mt-2 mt-md-0">
-            {% if messages %}
-            <li class="nav-item">
-              {% for message in messages %}
-              <a class="nav-link text-white">{{ message }}</a>
-              {% endfor %}
-            </li>
-            {% endif %}
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link">¡Hola {{ user.first_name }}!</a>
-            </li>
-            {% endif %}
-            {% if user.is_superuser %}
-            <li class="nav-item">
-              <a class=nav-link href="{% url 'control' %}">Panel de control</a>
-            </li>
-            <li class="nav-item">
-              <a class=nav-link href="{% url 'cargar' %}">Cargar Menu</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'perfil_admin' %}">Perfil</a>
-            </li>
-            {% elif user.is_employee %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'cargar' %}">Cargar Menu</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'perfil_empleado' %}">Perfil</a>
-            </li>
-            {% elif user.is_customer %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'perfil_cliente' %}">Perfil</a>
-            </li>
-            {% endif %}
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">Salir</a>
-            </li>
-            {% endif %}
-            {% if user.is_authenticated == False %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}">Ingresar</a>
-            </li>
-            <li class="nav-item">
-              <a class="btn btn-outline-secondary mx-3" data-toggle="modal" data-target="#reg_modal">Registrase</a>
-            </li>
-            {% endif %}
-            <div class="form-inline my-2 my-lg-0">
-              <a href="{% url 'carrito' %}">
-                <img  id="cart-icon" src="{% static 'tienda/img/carrito.png' %}" width="25">
+        <link rel="stylesheet" href="{% static 'tienda/css/tienda.css' %}"></link>
+        <link rel="stylesheet" href="{% static 'menu/css/menu.css' %}"></link>
+    
+        <script type="text/javascript">
+          var user = "{{ request.user }}"
+        </script>
+    
+    </head>
+    <body id="page-top">
+      <!-- Navigation-->
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+          <div class="container">
+              <a class="navbar-brand js-scroll-trigger" href="{% url 'home' %}">
+                  Shelter | Cervecería
               </a>
-              <p id="cart-total">{{ carrito_items }}</p>
-            </div>
-          </ul>
-        </div>
+              <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                  Menu
+                  <i class="fas fa-bars ml-1"></i>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarResponsive">
+                  <ul class="navbar-nav text-uppercase ml-auto">
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'promos' %}">Promos</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'menu' %}">Menu</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'tienda' %}">Tienda</a>
+                    </li>
+                    {% if user.is_superuser %}
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'control' %}">Panel</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'cargar' %}">Cargar</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'perfil_admin' %}">Perfil</a>
+                    </li>
+                    {% elif user.is_employee %}
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'cargar' %}">Cargar</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'perfil_empleado' %}">Perfil</a>
+                    </li>
+                    {% elif user.is_customer %}
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'perfil_cliente' %}">Perfil</a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'logout' %}">Salir</a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated == False %}
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'login' %}">
+                        <i class="bi bi-person-square"></i>
+                      </a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'carrito' %}">
+                        <svg class="mb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                          <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                        </svg>
+                        <!-- <p id="cart-total">{{ carrito_items }}</p> -->
+                      </a>
+                    </li>
+                  </ul>
+              </div>
+          </div>
       </nav>
-    </header>
-
-    <main role="main">
 
       {% block content %}
       {% endblock content %}
 
-      <div class="modal fade" id="reg_modal" tabindex="-1" aria-labelledby="usuarios_registro" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="usuarios_registro">Tipo de cuenta</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <a class="btn btn-outline-info m-4" href="{% url 'cliente_reg' %}">Soy cliente</a>
-              <a class="btn btn-outline-info m-4" href="{% url 'empleado_reg' %}">Soy empleado</a>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
-            </div>
+      <!-- Footer-->
+      <footer class="footer py-4">
+          <div class="container">
+              <div class="row align-items-center">
+                  <div class="col-lg-4 text-lg-left">Copyright © Shelter | Cervecería - 2021</div>
+                  <div class="col-lg-4 my-3 my-lg-0">
+                      <a class="btn btn-dark btn-social mx-2" href="https://www.facebook.com/shelter.welovebirra/"><i class="fab fa-facebook-f"></i></a>
+                      <a class="btn btn-dark btn-social mx-2" href="https://www.instagram.com/shelter.welovebirra/"><i class="fab fa-instagram"></i></a>
+                  </div>
+                  <div class="col-lg-4 text-lg-right">
+                      <a class="mr-3" href="{% url 'about' %}">Sobre nosotros</a>
+                      <a href="#!">Diseño</a>
+                  </div>
+              </div>
           </div>
-        </div>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <footer class="container">
-        <p class="float-right"><a href="#">Volver a subir</a></p>
-        <p>&copy; 2020-2021 Shelter, we love birra. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
       </footer>
 
-    </main>
+      <!-- Bootstrap core JS-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+      <!-- Third party plugin JS-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+      <!-- Core theme JS-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script type="text/javascript" src="{% static 'main/js/popper.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'main/js/bootstrap.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'main/js/holder.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'main/js/scripts.js' %}"></script>
+      <script type="text/javascript" src="{% static 'tienda/js/cart.js' %}"></script>
 
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="{% static 'main/js/popper.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'main/js/bootstrap.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'main/js/holder.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'tienda/js/cart.js' %}"></script>
-
-  </body>
+    </body>
 </html>
+

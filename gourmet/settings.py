@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     # menu app
     'menu.apps.MenuConfig',
-    # comentarios app
-    'comentarios.apps.ComentariosConfig',
     # get default user app config
     'users.apps.UsersConfig',
     # tienda app

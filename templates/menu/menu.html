@@ -1,153 +1,154 @@
-{% extends "main/base.html" %}
+{% extends "main/plantilla.html" %}
 {% load static %}
 {% block content %}
-<div class="container mt-4">
-    <div class="border-bottom my-5">
-        <div class="row">
-            <div class="col-8">
-                {% if user.is_superuser or user.is_employee %}
-                <a class="text-right" href="{% url 'api_prod' %}">
-                    <h2 class="text-left">Nuestra carta</h2>
-                </a>
-                {% else %}
-                    <h2 class="text-left">Nuestra carta</h2>
-                {% endif %}
+<section class="page-section bg-light">
+    <div class="container">
+        <div class="border-bottom mb-5">
+            <div class="row">
+                <div class="col-8">
+                    {% if user.is_superuser or user.is_employee %}
+                    <a class="text-right" href="{% url 'api_prod' %}">
+                        <h2 class="section-heading text-uppercase text-left">Nuestra carta</h2>
+                    </a>
+                    {% else %}
+                        <h2 class="section-heading text-uppercase text-left">Nuestra carta</h2>
+                    {% endif %}
+                </div>
+                <div class="col-4 pl-6">
+                    <form method="post" class="form-inline mt-2" style="float: right;">
+                        {% csrf_token %}
+                        <input class="form-control-sm mr-2 mt-2" type="text" id="productos" name="productos" aria-label="Search">
+                        <button class="btn btn-primary btn-sm text-uppercase mt-2" name="buscar" value="buscar" type="submit">Buscar</button>
+                    </form>
+                </div>
             </div>
-            <div class="col-4 pl-6">
-                <form method="post" class="form-inline" style="float: right;">
-                    {% csrf_token %}
-                    <input class="form-control-sm" type="text" id="productos" name="productos" placeholder="Item" aria-label="Search">
-                    <button class="btn btn-outline-primary btn-sm my-2 ml-2" name="buscar" value="buscar" type="submit">Buscar</button>
-                </form>
-            </div>
         </div>
-    </div>
 
-    {% if productos %}
+        {% if productos %}
 
-    {% for item in productos %}
-    <div class="row border p-2 my-3 rounded" style="box-shadow: 3px 3px 3px #aaaaaa;">
-        <div class="col-7">
-            <div class="mb-4">
-                <h5 class="mb-3"><b>{{ item.nombre }}</b></h5>
-                {{ item.detalle }}
-            </div>
-            {% if user.is_superuser or user.is_employee%}
-            <form method="POST">
-                <a class="btn btn-sm btn-outline-info" href="{% url 'modificar' item.id %}">Modificar</a>
-                {% csrf_token %}
-                <button class="btn btn-sm btn-outline-info" type="submit" name="eliminar" value="{{ item.id }}">Eliminar</button>
-            </form>
-            {% else %}
-                <button class="btn btn-sm btn-outline-success">Ordenar</button>
-            {% endif %}
-        </div>
-        <div class="col-2">
-            <b>{{ item.precio }} ARS</b><br><br>
-            {% if item.delivery %}
-                <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/delivery.png' %}" width="25">
-            {% endif %}
-            {% if item.vegano %}
-                <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/vegan_1.png' %}" width="25">
-            {% endif %}
-            {% if item.celiaco %}
-                <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/celiaco.png' %}" width="25">
-            {% endif %}
-        </div>
-        <div class="col-3 text-center">
-            {% if item.ruta_imagen %}
-            <img class="img-fluid rounded" src="/media/{{ item.ruta_imagen }}" width="170">
-            {% endif %}
-        </div>
-    </div>
-    {% endfor %}
-
-    {% else %}
-
-    {% for categoria in categorias %}
-    <div class="catBtn" id='{{ forloop.counter0 }}' onclick="ButtonId(this)">
-        {{ categoria }}
-        <div class="arrows">
-            <svg class="down" id="down-{{ forloop.counter0 }}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-            </svg>
-            <svg class="up" id="up-{{ forloop.counter0 }}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-square" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 9.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
-            </svg> 
-        </div>
-    </div>
-    <div class="food-box" id="food-box-{{ forloop.counter0 }}">
-        {% for producto in categoria.producto_set.all %}
+        {% for item in productos %}
         <div class="row border p-2 my-3 rounded" style="box-shadow: 3px 3px 3px #aaaaaa;">
             <div class="col-7">
                 <div class="mb-4">
-                    <h5 class="mb-3"><b>{{ producto.nombre }}</b></h5>
-                    {{ producto.detalle }}
+                    <h5 class="mb-3"><b>{{ item.nombre }}</b></h5>
+                    {{ item.detalle }}
                 </div>
                 {% if user.is_superuser or user.is_employee%}
                 <form method="POST">
-                    <a class="btn btn-sm btn-outline-info" href="{% url 'modificar' producto.id %}">Modificar</a>
+                    <a class="btn btn-primary btn-sm text-uppercase" href="{% url 'modificar' item.id %}">Modificar</a>
                     {% csrf_token %}
-                    <button class="btn btn-sm btn-outline-info" type="submit" name="eliminar" value="{{ producto.id }}">Eliminar</button>
+                    <button class="btn btn-primary btn-sm text-uppercase" type="submit" name="eliminar" value="{{ item.id }}">Eliminar</button>
                 </form>
                 {% else %}
-                    <button class="btn btn-sm btn-outline-success">Ordenar</button>
+                    <button class="btn btn-primary btn-sm text-uppercase" href="{% url 'carrito'%}">Ordenar</button>
                 {% endif %}
             </div>
             <div class="col-2">
-                <b>{{ producto.precio }} ARS</b><br><br>
-                {% if producto.delivery %}
+                <b>{{ item.precio }} ARS</b><br><br>
+                {% if item.delivery %}
                     <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/delivery.png' %}" width="25">
                 {% endif %}
-                {% if producto.vegano %}
+                {% if item.vegano %}
                     <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/vegan_1.png' %}" width="25">
                 {% endif %}
-                {% if producto.celiaco %}
+                {% if item.celiaco %}
                     <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/celiaco.png' %}" width="25">
                 {% endif %}
             </div>
             <div class="col-3 text-center">
-                {% if producto.ruta_imagen %}
-                <img class="img-fluid rounded" src="/media/{{ producto.ruta_imagen }}" width="170">
+                {% if item.ruta_imagen %}
+                <img class="img-fluid rounded" src="/media/{{ item.ruta_imagen }}" width="170">
                 {% endif %}
             </div>
         </div>
         {% endfor %}
-    </div>
-    {% endfor %}
 
-    {% endif %}
+        {% else %}
+
+        {% for categoria in categorias %}
+        <div class="catBtn" id='{{ forloop.counter0 }}' onclick="ButtonId(this)">
+            <h5 class="section-subheading">{{ categoria }}
+                <svg class="down" id="down-{{ forloop.counter0 }}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                </svg>
+                <svg class="up" id="up-{{ forloop.counter0 }}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-square" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 9.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                </svg>
+            </h5>
+        </div>
+        <div class="food-box" id="food-box-{{ forloop.counter0 }}">
+            {% for producto in categoria.producto_set.all %}
+            <div class="row border p-2 my-3 rounded" style="box-shadow: 3px 3px 3px #aaaaaa;">
+                <div class="col-7">
+                    <div class="mb-4">
+                        <h5 class="mb-3"><b>{{ producto.nombre }}</b></h5>
+                        {{ producto.detalle }}
+                    </div>
+                    {% if user.is_superuser or user.is_employee%}
+                    <form method="POST">
+                        <a class="btn btn-sm btn-outline-info" href="{% url 'modificar' producto.id %}">Modificar</a>
+                        {% csrf_token %}
+                        <button class="btn btn-sm btn-outline-info" type="submit" name="eliminar" value="{{ producto.id }}">Eliminar</button>
+                    </form>
+                    {% else %}
+                        <button class="btn btn-sm btn-outline-success">Ordenar</button>
+                    {% endif %}
+                </div>
+                <div class="col-2">
+                    <b>{{ producto.precio }} ARS</b><br><br>
+                    {% if producto.delivery %}
+                        <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/delivery.png' %}" width="25">
+                    {% endif %}
+                    {% if producto.vegano %}
+                        <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/vegan_1.png' %}" width="25">
+                    {% endif %}
+                    {% if producto.celiaco %}
+                        <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/celiaco.png' %}" width="25">
+                    {% endif %}
+                </div>
+                <div class="col-3 text-center">
+                    {% if producto.ruta_imagen %}
+                    <img class="img-fluid rounded" src="/media/{{ producto.ruta_imagen }}" width="170">
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+        {% endif %}
 
 
-    <script>
+        <script>
 
-        function ButtonId(elem) {
+            function ButtonId(elem) {
 
-            var cat = elem.getAttribute('categoria');
-            var foodBox = document.getElementById("food-box-" + elem.id)
-            var up = document.getElementById("up-" + elem.id);
-            var down = document.getElementById("down-" + elem.id);
+                var cat = elem.getAttribute('categoria');
+                var foodBox = document.getElementById("food-box-" + elem.id)
+                var up = document.getElementById("up-" + elem.id);
+                var down = document.getElementById("down-" + elem.id);
 
-            if (foodBox.classList.contains("show")) {
-                foodBox.classList.remove("show");
-                down.classList.remove("show");
-                up.classList.remove("hidden");
-            } else {
-                foodBox.classList.add("show");
-                down.classList.add("show");
-                up.classList.add("hidden");
+                if (foodBox.classList.contains("show")) {
+                    foodBox.classList.remove("show");
+                    down.classList.remove("show");
+                    up.classList.remove("hidden");
+                } else {
+                    foodBox.classList.add("show");
+                    down.classList.add("show");
+                    up.classList.add("hidden");
+                }
+
             }
 
-        }
-
-    </script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-        $( "#productos" ).autocomplete({
-            source: "{% url 'buscar' %}"
-        });
-    </script>
-</div>
+        </script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $( "#productos" ).autocomplete({
+                source: "{% url 'buscar' %}"
+            });
+        </script>
+    </div>
+</section>
 
 {% endblock content %}

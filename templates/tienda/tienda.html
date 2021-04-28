@@ -1,58 +1,63 @@
-{% extends "main/base.html" %}
+{% extends "main/plantilla.html" %}
 {% load static %}
 {% block content %}
-<div class="container mt-4">
-    <div class="my-5">
-        <div class="row">
-            <div class="col-6">
-                <form method="post" class="form-inline">
-                    {% csrf_token %}
-                    <input class="form-control mr-sm-2" type="text" id="productos" name="productos" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-info my-2 my-sm-0" name="buscar" value="buscar" type="submit">Buscar</button>
-                </form>
+<section class="page-section bg-light">
+    <div class="container">
+        <div class="border-bottom mb-5">
+            <h2 class="section-heading text-uppercase text-left mb-2">Tienda</h2>
+        </div>   
+        <div class="my-5">
+            <div class="row">
+                <div class="col-6">
+                    <form method="post" class="form-inline">
+                        {% csrf_token %}
+                        <input class="form-control mr-sm-2" type="text" id="productos" name="productos" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-info my-2 my-sm-0" name="buscar" value="buscar" type="submit">Buscar</button>
+                    </form>
+                </div>
+                <div class="col-6 text-right">
+                    <a class="btn btn-outline-secondary my-2 my-sm-0 text-right" href="{% url 'carrito' %}">Ir al carrito</a>                
+                </div>
             </div>
-            <div class="col-6 text-right">
-                <a class="btn btn-outline-secondary my-2 my-sm-0 text-right" href="{% url 'carrito' %}">Ir al carrito</a>                
+        </div>
+        {% for item in items %}
+        <div class="row border p-2 my-3 rounded" style="box-shadow: 3px 3px 3px #aaaaaa;">
+            <div class="col-7">
+                <div class="mb-4">
+                    <h5 class="mb-3"><b>{{ item.nombre }}</b></h5>
+                    {{ item.detalle }}
+                    {{ item.categoria }}
+                </div>
+                <button data-product="{{item.id}}" data-action="add" class="btn btn-sm btn-outline-secondary add-btn update-cart">Agregar</button>
+            </div>
+            <div class="col-2">
+                <b>{{ item.precio }} ARS</b><br><br>
+                {% if item.delivery %}
+                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/delivery.png' %}" width="25">
+                {% endif %}
+                {% if item.vegano %}
+                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/vegan_1.png' %}" width="25">
+                {% endif %}
+                {% if item.celiaco %}
+                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/celiaco.png' %}" width="25">
+                {% endif %}
+            </div>
+            <div class="col-3 text-center">
+                {% if item.ruta_imagen %}
+                <img class="img-fluid rounded" src="/media/{{ item.ruta_imagen }}" width="170">
+                {% endif %}
             </div>
         </div>
-    </div>
-    {% for item in items %}
-    <div class="row border p-2 my-3 rounded" style="box-shadow: 3px 3px 3px #aaaaaa;">
-        <div class="col-7">
-            <div class="mb-4">
-                <h5 class="mb-3"><b>{{ item.nombre }}</b></h5>
-                {{ item.detalle }}
-                {{ item.categoria }}
-            </div>
-            <button data-product="{{item.id}}" data-action="add" class="btn btn-sm btn-outline-secondary add-btn update-cart">Agregar</button>
-        </div>
-        <div class="col-2">
-            <b>{{ item.precio }} ARS</b><br><br>
-            {% if item.delivery %}
-                <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/delivery.png' %}" width="25">
-            {% endif %}
-            {% if item.vegano %}
-                <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/vegan_1.png' %}" width="25">
-            {% endif %}
-            {% if item.celiaco %}
-                <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/celiaco.png' %}" width="25">
-            {% endif %}
-        </div>
-        <div class="col-3 text-center">
-            {% if item.ruta_imagen %}
-            <img class="img-fluid rounded" src="/media/{{ item.ruta_imagen }}" width="170">
-            {% endif %}
-        </div>
-    </div>
-    {% endfor %}
+        {% endfor %}
 
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-        $( "#productos" ).autocomplete({
-            source: "{% url 'buscar' %}"
-        });
-    </script>
-</div>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $( "#productos" ).autocomplete({
+                source: "{% url 'buscar' %}"
+            });
+        </script>
+    </div>
+</section>
 
 {% endblock content %}

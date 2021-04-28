@@ -15,9 +15,6 @@ from django.http import HttpResponse
 
 def menu(request):
 
-
-    # cat[0].producto_set.all()[0]
-
     if request.method == 'POST':
         if request.POST.get('eliminar'):
             Producto.objects.filter(id = request.POST['eliminar']).delete()
@@ -63,33 +60,62 @@ def modificar(request, item_id):
     if request.method == 'POST':
         pr_form = CargarProducto(request.POST, request.FILES, instance=Producto.objects.filter(id=item_id).first())
         update_doc = Producto.objects.filter(id=item_id).first()
+        add_cat = AgregarCategoria(request.POST)
+        del_cat = EliminarCategoria(request.POST)
 
-        if pr_form.is_valid():
-            update_doc.nombre = pr_form.cleaned_data['nombre']
-            update_doc.detalle = pr_form.cleaned_data['detalle']
-            update_doc.ruta_imagen = pr_form.cleaned_data['ruta_imagen']
-            update_doc.vegano = pr_form.cleaned_data['vegano']
-            update_doc.delivery = pr_form.cleaned_data['delivery']
-            update_doc.celiaco = pr_form.cleaned_data['celiaco']
-            update_doc.precio = pr_form.cleaned_data['precio']
-            update_doc.estado = pr_form.cleaned_data['estado']
-            update_doc.save()
-            
-            # agregar categorias elegidas
-            for categoria in pr_form.cleaned_data['categoria']:
-                if categoria not in update_doc.categoria.all():
-                    update_doc.categoria.add(categoria)
-            # eliminar las no elegidas
-            for categoria in update_doc.categoria.all():
-                if categoria not in pr_form.cleaned_data['categoria']:
-                    update_doc.categoria.remove(categoria)
+        if request.POST.get('agregar'):
 
-            return redirect("menu")
+            if add_cat.is_valid():
+
+                nombre = add_cat.cleaned_data['nombre']
+                slug = add_cat.cleaned_data['slug']
+
+                cat = Categoria(
+                    nombre=nombre, 
+                    slug=slug
+                    )
+                cat.save()
+
+                return redirect("modificar", item_id = item_id)
+
+        elif request.POST.get('eliminar'):
+
+            if del_cat.is_valid():
+
+                for cat_to_del in del_cat.cleaned_data['categoria']:
+                    Categoria.objects.filter(id=cat_to_del.id).delete()
+
+                return redirect("modificar", item_id = item_id)
+        
+        else:
+            if pr_form.is_valid():
+                update_doc.nombre = pr_form.cleaned_data['nombre']
+                update_doc.detalle = pr_form.cleaned_data['detalle']
+                update_doc.ruta_imagen = pr_form.cleaned_data['ruta_imagen']
+                update_doc.vegano = pr_form.cleaned_data['vegano']
+                update_doc.delivery = pr_form.cleaned_data['delivery']
+                update_doc.celiaco = pr_form.cleaned_data['celiaco']
+                update_doc.precio = pr_form.cleaned_data['precio']
+                update_doc.estado = pr_form.cleaned_data['estado']
+                update_doc.save()
+                
+                # agregar categorias elegidas
+                for categoria in pr_form.cleaned_data['categoria']:
+                    if categoria not in update_doc.categoria.all():
+                        update_doc.categoria.add(categoria)
+                # eliminar las no elegidas
+                for categoria in update_doc.categoria.all():
+                    if categoria not in pr_form.cleaned_data['categoria']:
+                        update_doc.categoria.remove(categoria)
+
+                return redirect("menu")
 
     else:
         pr_form = CargarProducto(instance=Producto.objects.filter(id=item_id).first())
+        add_cat = AgregarCategoria()
+        del_cat = EliminarCategoria()
     
-    return render(request, 'menu/modificar.html', {'pr_form': pr_form})
+    return render(request, 'menu/modificar.html', {'pr_form': pr_form, 'del_cat': del_cat ,'add_cat': add_cat})
 
 
 @login_required
