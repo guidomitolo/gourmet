@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from menu.models import Producto
+from menu.models import Producto, Categoria
 from menu.forms import BuscarProducto
 from .models import Orden, OrdenarProducto, Despacho
 
@@ -21,8 +21,9 @@ def tienda(request):
         orden, creado = Orden.objects.get_or_create(cliente=cliente, completado=False)
         items = orden.ordenarproducto_set.all()
         carrito_items = orden.total_orden_cantidad
-
-        productos = Producto.objects.filter(estado='Publicado')
+        
+        categorias = Categoria.objects.all()
+        productos = None
 
         if request.method == 'POST':
             if request.POST.get('buscar'):
@@ -32,7 +33,8 @@ def tienda(request):
             'title': 'Tienda',
             'items': productos,
             'buscar': BuscarProducto(),
-            'carrito_items':carrito_items
+            'carrito_items':carrito_items,
+            'categorias':categorias
             }
         )
     else:
@@ -124,15 +126,16 @@ def procesar_orden(request):
 
         if total == orden.total_orden_precio:
             orden.completado = True
+            
         orden.save()
 
         Despacho.objects.create(
             cliente = cliente,
             orden = orden,
-            direccion = data['despacho']['address'],
-            ciudad = data['despacho']['city'],
-            estado = data['despacho']['state'],
-            postal = data['despacho']['zipcode'],
+            calle = data['despacho']['calle'],
+            altura = data['despacho']['altura'],
+            municipio = data['despacho']['municipio'],
+            localidad = data['despacho']['localidad'],
         )
 
         return JsonResponse("Payment complete", safe=False)

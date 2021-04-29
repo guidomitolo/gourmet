@@ -3,35 +3,37 @@
 {% block content %}
 <section class="page-section bg-light">
     <div class="container">
-        <div class="border-bottom mb-5">
-            <h2 class="section-heading text-uppercase text-left mb-2">Tienda</h2>
-        </div>   
+        <div class="col-8 border-bottom">
+            <h2 class="section-heading text-uppercase text-left">Tienda</h2>
+        </div>
         <div class="my-5">
             <div class="row">
                 <div class="col-6">
                     <form method="post" class="form-inline">
                         {% csrf_token %}
-                        <input class="form-control mr-sm-2" type="text" id="productos" name="productos" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-info my-2 my-sm-0" name="buscar" value="buscar" type="submit">Buscar</button>
+                        <input class="form-control mr-sm-2" type="text" id="productos" name="productos" aria-label="Search">
+                        <button class="btn btn-primary btn-sm text-uppercase mt-2 my-2 my-sm-0" name="buscar" value="buscar" type="submit">Buscar</button>
                     </form>
                 </div>
                 <div class="col-6 text-right">
-                    <a class="btn btn-outline-secondary my-2 my-sm-0 text-right" href="{% url 'carrito' %}">Ir al carrito</a>                
+                    <a class="btn btn-primary btn-sm text-uppercase my-2 my-sm-0 text-right" href="{% url 'carrito' %}">Ir al carrito</a>                
                 </div>
             </div>
         </div>
+
+        {% if items %}
+
         {% for item in items %}
-        <div class="row border p-2 my-3 rounded" style="box-shadow: 3px 3px 3px #aaaaaa;">
+        <div class="row border p-2 my-3 rounded" style="box-shadow: 1px 1px 1px #aaaaaa;">
             <div class="col-7">
                 <div class="mb-4">
                     <h5 class="mb-3"><b>{{ item.nombre }}</b></h5>
                     {{ item.detalle }}
-                    {{ item.categoria }}
                 </div>
-                <button data-product="{{item.id}}" data-action="add" class="btn btn-sm btn-outline-secondary add-btn update-cart">Agregar</button>
+                <button data-product="{{item.id}}" data-action="add" class="btn btn-primary btn-sm text-uppercase add-btn update-cart">Agregar</button>
             </div>
             <div class="col-2">
-                <b>{{ item.precio }} ARS</b><br><br>
+                <b>ARS {{ item.precio }}</b><br><br>
                 {% if item.delivery %}
                     <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/delivery.png' %}" width="25">
                 {% endif %}
@@ -50,14 +52,55 @@
         </div>
         {% endfor %}
 
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script>
-            $( "#productos" ).autocomplete({
-                source: "{% url 'buscar' %}"
-            });
-        </script>
+        {% else %}
+
+        {% for categoria in categorias %}
+        <button class="collapsible">
+            <b>{{ categoria }}</b>
+        </button>
+        <div class="content border">
+        {% for producto in categoria.producto_set.all %}
+            <div class="row m-2 p-3 mb-3 border">
+                <div class="col-7">
+                    <div class="mb-4">
+                        <h5 class="mb-3"><b>{{ producto.nombre }}</b>
+                            {% if producto.delivery %}
+                            <img class="img-fluid max-width: 100% rounded ml-2" src="{% static 'menu/img/delivery.png' %}" width="25">
+                            {% endif %}
+                            {% if producto.vegano %}
+                            <img class="img-fluid max-width: 100% rounded ml-2" src="{% static 'menu/img/vegan_1.png' %}" width="25">
+                            {% endif %}
+                            {% if producto.celiaco %}
+                            <img class="img-fluid max-width: 100% rounded ml-2" src="{% static 'menu/img/celiaco.png' %}" width="34">
+                            {% endif %}
+                        </h5>
+                        {{ producto.detalle }}
+                    </div>
+                    <button data-product="{{producto.id}}" data-action="add" class="btn btn-primary btn-sm text-uppercase add-btn update-cart">Agregar</button>
+                </div>
+                <div class="col-2">
+                    <b>ARS {{ producto.precio }}</b><br><br>
+                </div>
+                <div class="col-3 text-center">
+                    {% if producto.ruta_imagen %}
+                    <img class="img-fluid rounded" src="/media/{{ producto.ruta_imagen }}" width="170">
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        {% endfor %}
+        {% endif %}
     </div>
 </section>
+
+<!-- Ajax Query   -->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $( "#productos" ).autocomplete({
+        source: "{% url 'buscar' %}"
+    });
+</script>
 
 {% endblock content %}

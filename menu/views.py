@@ -2,6 +2,7 @@ from users.decorators import allowed_users
 from django.shortcuts import render, redirect
 
 from menu.models import Producto, Categoria
+from tienda.models import Orden
 from menu.forms import CargarProducto, AgregarCategoria, EliminarCategoria, BuscarProducto
 
 from django.contrib.auth.decorators import login_required
@@ -25,12 +26,19 @@ def menu(request):
     else:
         categorias = Categoria.objects.all()
         productos = None
+
+        if request.user.is_authenticated:        
+            if request.user.is_customer:
+                carrito = Orden.objects.get(cliente=request.user.cliente, completado=False).total_orden_cantidad
+        else:
+            carrito = 0
     
     return render(request, 'menu/menu.html', {
         'title': 'Menu',
         'buscar': BuscarProducto(),
         'categorias': categorias,
-        'productos': productos
+        'productos': productos,
+        'carrito_items': carrito
         }
     )
 
@@ -115,7 +123,14 @@ def modificar(request, item_id):
         add_cat = AgregarCategoria()
         del_cat = EliminarCategoria()
     
-    return render(request, 'menu/modificar.html', {'pr_form': pr_form, 'del_cat': del_cat ,'add_cat': add_cat})
+    return render(request, 
+        'menu/modificar.html',
+        {
+            'pr_form': pr_form,
+            'del_cat': del_cat ,
+            'add_cat': add_cat
+        }
+    )
 
 
 @login_required
@@ -176,10 +191,25 @@ def cargar_carta(request):
         add_cat = AgregarCategoria()
         del_cat = EliminarCategoria()
     
-    return render(request, 'menu/cargar.html', {'pr_form': pr_form, 'del_cat': del_cat ,'add_cat': add_cat})
+    return render(request, 
+        'menu/cargar.html', 
+        {
+            'pr_form': pr_form, 
+            'del_cat': del_cat ,
+            'add_cat': add_cat,
+        }
+    )
 
 def promos(request):
+
+    if request.user.is_authenticated:        
+        if request.user.is_customer:
+            carrito = Orden.objects.get(cliente=request.user.cliente, completado=False).total_orden_cantidad
+    else:
+        carrito = 0
+
     context = {
-        "title": "Promos"
+        "title": "Promos",
+        "carrito_items": carrito
     }
     return render(request, "main/promos.html", context)

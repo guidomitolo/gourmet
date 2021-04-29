@@ -4,28 +4,22 @@
 <section class="page-section bg-light">
     <div class="container">
         <div class="border-bottom mb-5">
-            <h2 class="section-heading text-uppercase text-left mb-2">Carrito</h2>
+            <div class="row">
+                <div class="col-6">
+                    <h2 class="section-heading text-uppercase text-left mb-2">Carrito</h2>
+                </div>
+                <div class="col-6 text-right">
+                    <button class="btn btn-warning text-muted" href="{% url 'tienda' %}">Seguir comprando</button>
+                </div>
+            </div>
         </div>
         <div class="my-5">
             <div class="row">
                 <div class="col-lg-12">
-                    <a  class="btn btn-outline-dark" href="{% url 'tienda' %}">&#x2190; Seguir comprando</a>
-                    <br>
-                    <br>
-                    <table class="table">
-                        <tr>
-                            <th><h5>Total: <strong>ARS {{ orden.total_orden_precio }}</strong></h5></th>
-                            <th><h5>Productos: <strong>{{ orden.total_orden_cantidad }}</strong></h5></th>
-                            <th>
-                                <a style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
-                            </th>
-                        </tr>
-                    </table>
-                    <br>
-                    <table class="table">
+                    <table class="table table-sm">
                         {% csrf_token %}
                         <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th></th>
                                 <th>Item</th>
                                 <th>Precio</th>
@@ -35,25 +29,38 @@
                         </thead>
                         <tbody>
                             {% for item in items %}
-                            <tr>
-                                <td class="text-center">
+                            <tr class="text-center">
+                                <td>
                                     <img width="60" class="img-fluid max-width: 100% rounded" src="/media/{{ item.producto.ruta_imagen }}">
                                 </td>
-                                <td>{{ item.producto.nombre }}</td>
-                                <td>{{ item.producto.precio }}</td>
-                                <td>
-                                    <div>
-                                        <p>{{ item.cantidad }}
-                                        <img class="update-cart" data-product="{{ item.producto.id }}" data-action="add" width="10" src="{% static  'tienda/img/flecha_arriba.png' %}">
-                                        <img class="update-cart" data-product="{{ item.producto.id }}" data-action="remove" width="10" src="{% static  'tienda/img/flecha_abajo.png' %}">
-                                        </p>
-                                    </div>                              
+                                <td class="align-middle">{{ item.producto.nombre }}</td>
+                                <td class="align-middle">{{ item.producto.precio }}</td>
+                                <td class="align-middle">
+                                    {{ item.cantidad }}
+                                    <a type="button" class="update-cart ml-2" data-product="{{ item.producto.id }}" data-action="add">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                                            </svg>
+                                    </a>
+                                    <a type="button" class="update-cart" data-product="{{ item.producto.id }}" data-action="remove">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                                            </svg>
+                                    </a>
                                 </td>
-                                <td>{{ item.total_precio }}</td>
+                                <td class="align-middle">{{ item.total_precio }}</td>
                             </tr>
                             {% endfor %}
+                            <tr class="text-center">
+                                <td colspan="3"></td>
+                                <td><h5>TOTAL</h5></td>
+                                <td><h5>{{ orden.total_orden_precio }}</h5></td>
+                            </tr>
                         </tbody>
                     </table>
+                    <div class="text-right" style="margin: 3%;">
+                        <a type="button" class="btn btn-primary text-uppercase" href="{% url 'checkout' %}">Checkout</a>
+                    </div>
                 </div>
             </div>
         </div>

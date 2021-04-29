@@ -7,7 +7,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Shelter, we love birra</title>
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="{% static 'main/img/favicon.ico' %}"/>
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -16,11 +16,11 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'main/css/styles.css' %}" rel="stylesheet" />
-
         <link href="{% static 'main/css/navbar.css' %}" rel="stylesheet" />
-
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">    
+        <!-- Tienda theme CSS -->
         <link rel="stylesheet" href="{% static 'tienda/css/tienda.css' %}"></link>
+        <!-- Menu theme CSS -->
         <link rel="stylesheet" href="{% static 'menu/css/menu.css' %}"></link>
     
         <script type="text/javascript">
@@ -46,6 +46,9 @@
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'menu' %}">Menu</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'tienda' %}">Tienda</a>
                     </li>
                     {% if user.is_superuser %}
                     <li class="nav-item">
@@ -82,13 +85,14 @@
                     </li>
                     {% endif %}
                     <li class="nav-item">
-                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'carrito' %}">
-                        <svg class="mb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                      <a class="nav-link mr-n2" class="nav-link js-scroll-trigger" href="{% url 'carrito' %}">
+                        <svg class="mb-1 mr-n5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
                           <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                         </svg>
-                        <!-- <p id="cart-total">{{ carrito_items }}</p> -->
+                        <!-- <img class="img-fluid" src="{% static 'tienda/img/carrito.png' }' %}" width="25"> -->
                       </a>
                     </li>
+                    <p id="cart-total">{{ carrito_items }}</p>
                   </ul>
               </div>
           </div>
@@ -125,8 +129,10 @@
       <script type="text/javascript" src="{% static 'main/js/bootstrap.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'main/js/holder.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'main/js/scripts.js' %}"></script>
+      <!-- Cart theme JS-->
       <script type="text/javascript" src="{% static 'tienda/js/cart.js' %}"></script>
-
+      <!-- Menu theme JS-->
+      <script type="text/javascript" src="{% static 'menu/js/menu.js' %}"></script>
     </body>
 </html>
 

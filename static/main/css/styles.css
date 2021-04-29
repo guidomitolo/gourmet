@@ -10126,16 +10126,12 @@ header.masthead {
   background-position: center center;
   background-size: cover;
 }
-
 header.masthead.slide_two {
   background-image: url("/static/main/img/beer_bar_2.png");
 }
-
 header.masthead.slide_three {
   background-image: url("/static/main/img/beer_bar_3.png");
 }
-
-
 header.masthead .masthead-subheading {
   font-size: 1.5rem;
   font-style: italic;

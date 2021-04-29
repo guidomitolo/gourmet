@@ -12,69 +12,76 @@
 					<div class="box-element" id="form-wrapper">
 						<form id="form">
 							{% csrf_token %}
-							<div id="user-info">
+							<!-- <div id="user-info">
 								<div class="form-field">
-									<input required class="form-control" type="text" name="name" placeholder="Name..">
+									<input required class="form-control" type="text" name="name" placeholder="Nombre">
 								</div>
 								<div class="form-field">
-									<input required class="form-control" type="email" name="email" placeholder="Email..">
+									<input required class="form-control" type="email" name="email" placeholder="Correo Electrónico">
 								</div>
-							</div>
+							</div> -->
 							
 							<div id="shipping-info">
+								<h5 class="text-center">Información de envío</h5>
 								<hr>
-								<p>Información de envío</p>
-								<hr>
 								<div class="form-field">
-									<input class="form-control" type="text" name="address" placeholder="Address..">
+									<input required class="form-control" type="text" name="calle" placeholder="Calle">
 								</div>
 								<div class="form-field">
-									<input class="form-control" type="text" name="city" placeholder="City..">
+									<input required class="form-control" type="text" name="altura" placeholder="Altura">
 								</div>
 								<div class="form-field">
-									<input class="form-control" type="text" name="state" placeholder="State..">
+									<input required class="form-control" type="text" name="municipio" placeholder="Municipio">
 								</div>
 								<div class="form-field">
-									<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
-								</div>
-								<div class="form-field">
-									<input class="form-control" type="text" name="country" placeholder="Zip code..">
+									<input required class="form-control" type="text" name="localidad" placeholder="Localidad">
 								</div>
 							</div>
-		
-							<hr>
-							<input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+							<input id="form-button" class="btn btn-primary text-uppercase btn-block mt-4" type="submit" value="Aceptar y continuar">
 						</form>
 					</div>
 		
 					<br>
 					<div class="box-element hidden" id="payment-info">
 						<small>Opciones de Pago</small>
-						<button class="btn btn-outline-dark" id="make-payment">Pagar</button>
+						<button class="btn btn-primary text-uppercase ml-3" id="make-payment">Pagar</button>
 					</div>
 					
 				</div>
 
 				<div class="col-lg-6">
 					<div class="box-element">
-						<a class="btn btn-outline-dark" href="{% url 'carrito' %}">&#x2190; Volver al carrito</a>
-						<hr>
-						<h3>Resumen del pedido</h3>
-						<hr>
+						<h3 class="mb-4">
+							Resumen del pedido
+							<a class="btn btn-primary btn-sm mt-1" style="float: right;" href="{% url 'carrito' %}">Volver al carrito</a>
+						</h3>
 						{% for item in items %}
-						<div class="border p-1 m-1">
-							{% if item.producto.ruta_imagen %}
-							<div><img class="img-fluid rounded"  src="/media/{{ item.producto.ruta_imagen }}" width="120"></div>
-							{% else %}
-							<div></div>
-							{% endif %}
-							<div><p>{{ item.producto.nombre }}</p></div>
-							<div><p>ARS {{ item.producto.precio }}</p></div>
-							<div><p>Unidades: {{ item.cantidad }}</p></div>
+						<div class="row border p-1 m-1 mt-3">
+							<div class="col-7 p-2">
+								{{ item.producto.nombre }}  x  {{ item.cantidad }}
+								<div>
+									ARS {{ item.producto.precio }}
+								</div>
+							</div>
+							<div>
+								{% if item.producto.ruta_imagen %}
+								<div><img class="img-fluid rounded"  src="/media/{{ item.producto.ruta_imagen }}" width="120"></div>
+								{% else %}
+								<div></div>
+								{% endif %}
+							</div>
 						</div>
 						{% endfor %}
-						<h5>Items: {{ orden.total_orden_cantidad }}</h5>
-						<h5>Total: ARS {{ orden.total_orden_precio }}</h5>
+						<div class="row p-2">
+							<div class="col-6">
+								<h5>Cantidad:</h5>
+								<h5>Total:</h5>
+							</div>
+							<div class="col-6">
+								<h5 class="text-right">{{ orden.total_orden_cantidad }}</h5>
+								<h5 class="text-right">ARS {{ orden.total_orden_precio }}</h5>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -114,16 +121,16 @@
 		}
 
 		var despachoInfo = {
-			'address':null,
-			'city':null,
-			'state':null,
-			'zipcode':null,
+			'calle':null,
+			'altura':null,
+			'municipio':null,
+			'localidad':null,
 		}
 
-		despachoInfo.address = form.address.value
-		despachoInfo.city = form.city.value
-		despachoInfo.state = form.state.value
-		despachoInfo.zipcode = form.zipcode.value
+		despachoInfo.calle = form.calle.value
+		despachoInfo.altura = form.altura.value
+		despachoInfo.municipio = form.municipio.value
+		despachoInfo.localidad = form.localidad.value
 
 		if (user == 'AnonymousUser'){
 			userFormData.name = form.name.value
@@ -146,7 +153,7 @@
 		.then((response) => response.json())
 		.then((data) => {
 			console.log('Success:', data);
-			alert('Transaction completed');  
+			alert('¡Transacción Completada!');  
 
 			cart = {}
 			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
@@ -156,9 +163,9 @@
 			})
 	}
 
-	if (user != "AnonymousUser"){
-		document.getElementById("user-info").innerHTML = ""
-	}
+	// if (user != "AnonymousUser"){
+	// 	document.getElementById("user-info").innerHTML = ""
+	// }
 
 
 </script>

@@ -43,6 +43,7 @@ class Producto(models.Model):
     vegano = models.BooleanField("Vegano", default=False)
     delivery = models.BooleanField("Delivery", default=False)
     ruta_imagen = models.FileField(upload_to='menu/img/%Y/%m/%d', 
+                                    default='menu/default.png',
                                     blank=True,
                                     null=True)
     categoria = models.ManyToManyField(Categoria)
@@ -67,7 +68,7 @@ class Producto(models.Model):
 
         img = Image.open(self.ruta_imagen.path)
 
-        if img.height > 300 or img.width > 300:
-            output_size = (300,300)
+        if img.height > 250 or img.width > 250:
+            output_size = (250,250)
             img.thumbnail(output_size)
             img.save(self.ruta_imagen.path)
