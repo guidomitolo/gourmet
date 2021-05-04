@@ -30,6 +30,8 @@ def menu(request):
         if request.user.is_authenticated:        
             if request.user.is_customer:
                 carrito = Orden.objects.get(cliente=request.user.cliente, completado=False).total_orden_cantidad
+            else:
+                carrito = 0
         else:
             carrito = 0
     
@@ -48,7 +50,7 @@ class BuscarProducto(View):
     def get(self, request):
         if request.is_ajax:
             palabra = request.GET.get('term', '')
-            libro = Producto.objects.filter(nombre__icontains=palabra)
+            libro = Producto.objects.filter(nombre__icontains=palabra, estado="Publicado")
             results = []
             for an in libro:
                 data = {}
@@ -205,6 +207,8 @@ def promos(request):
     if request.user.is_authenticated:        
         if request.user.is_customer:
             carrito = Orden.objects.get(cliente=request.user.cliente, completado=False).total_orden_cantidad
+        else:
+            carrito = 0
     else:
         carrito = 0
 

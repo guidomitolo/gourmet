@@ -66,11 +66,12 @@
         {% else %}
 
         {% for categoria in categorias %}
-        <button class="collapsible">
-            <b>{{ categoria }}</b>
-        </button>
-        <div class="content border">
         {% for producto in categoria.producto_set.all %}
+            {% if producto.estado == "Publicado" %}
+            <button class="collapsible">
+                <b>{{ categoria }}</b>
+            </button>
+            <div class="content border">
             <div class="row m-2 p-3 mb-3 border">
                 <div class="col-7">
                     <div class="mb-4">
@@ -107,8 +108,9 @@
                     {% endif %}
                 </div>
             </div>
-        {% endfor %}
+            {% endif %}
         </div>
+        {% endfor %}
         {% endfor %}
         {% endif %}
     </div>

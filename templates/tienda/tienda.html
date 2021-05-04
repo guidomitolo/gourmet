@@ -76,7 +76,9 @@
                         </h5>
                         {{ producto.detalle }}
                     </div>
+                    {% if user.is_customer or user.is_authenticated == False %}
                     <button data-product="{{producto.id}}" data-action="add" class="btn btn-primary btn-sm text-uppercase add-btn update-cart">Agregar</button>
+                    {% endif %}
                 </div>
                 <div class="col-2">
                     <b>ARS {{ producto.precio }}</b><br><br>

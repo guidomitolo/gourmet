@@ -9,26 +9,58 @@
 		<div class="my-5">
 			<div class="row">
 				<div class="col-lg-6">
-					<div class="box-element" id="form-wrapper">
-						<form id="form">
+					<div class="box-element border rounded" id="form-wrapper">
+						<form method="post" id="form">
 							{% csrf_token %}
-							<!-- <div id="user-info">
+							{% if user.is_authenticated %}
+							<div id="user-info" class="mb-4">
+								<h5 class="text-center">Destinatario</h5>
 								<div class="form-field">
-									<input required class="form-control" type="text" name="name" placeholder="Nombre">
+									{{ form_usuario.first_name }}
 								</div>
 								<div class="form-field">
-									<input required class="form-control" type="email" name="email" placeholder="Correo Electrónico">
+									{{ form_usuario.last_name }}
 								</div>
-							</div> -->
+								<div class="form-field">
+									{{ form_usuario.email }}
+								</div>
+							</div>
+							<div id="shipping-info">
+								<h5 class="text-center">Información de envío</h5>
+								<div class="form-field">
+									{{ form_destino.calle }}
+								</div>
+								<div class="form-field">
+									{{ form_destino.altura }}
+								</div>
+								<div class="form-field">
+									{{ form_destino.municipio }}
+								</div>
+								<div class="form-field">
+									{{ form_destino.localidad }}
+								</div>
+							</div>
+							{% else %}
+							<div id="user-info" class="mb-4">
+								<h5 class="text-center">Destinatario</h5>
+								<div class="form-field">
+									<input required class="form-control" type="text" name="first_name" placeholder="Nombre">
+								</div>
+								<div class="form-field">
+									<input required class="form-control" type="text" name="last_name" placeholder="Apellido">
+								</div>
+								<div class="form-field">
+									<input required class="form-control" type="text" name="email" placeholder="Correo">
+								</div>
+							</div>
 							
 							<div id="shipping-info">
 								<h5 class="text-center">Información de envío</h5>
-								<hr>
 								<div class="form-field">
 									<input required class="form-control" type="text" name="calle" placeholder="Calle">
 								</div>
 								<div class="form-field">
-									<input required class="form-control" type="text" name="altura" placeholder="Altura">
+									<input required class="form-control" type="number" name="altura" placeholder="Altura">
 								</div>
 								<div class="form-field">
 									<input required class="form-control" type="text" name="municipio" placeholder="Municipio">
@@ -37,20 +69,21 @@
 									<input required class="form-control" type="text" name="localidad" placeholder="Localidad">
 								</div>
 							</div>
+
+							{% endif %}
 							<input id="form-button" class="btn btn-primary text-uppercase btn-block mt-4" type="submit" value="Aceptar y continuar">
 						</form>
 					</div>
 		
 					<br>
-					<div class="box-element hidden" id="payment-info">
+					<div class="box-element hidden border rounded" id="payment-info">
 						<small>Opciones de Pago</small>
 						<button class="btn btn-primary text-uppercase ml-3" id="make-payment">Pagar</button>
 					</div>
-					
 				</div>
 
 				<div class="col-lg-6">
-					<div class="box-element">
+					<div class="box-element border rounded">
 						<h3 class="mb-4">
 							Resumen del pedido
 							<a class="btn btn-primary btn-sm mt-1" style="float: right;" href="{% url 'carrito' %}">Volver al carrito</a>
@@ -88,85 +121,8 @@
 		</div>
 	</div>
 </section>
-
-
-<script type="text/javascript">
-
-	var form = document.getElementById('form')
-
-
-	var csrftoken_2 = document.getElementsByTagName("input")[0].value
-
-
-	form.addEventListener('submit', function(e){
-		e.preventDefault()
-		console.log('Form Submitted...')
-		document.getElementById('form-button').classList.add("hidden");
-		document.getElementById('payment-info').classList.remove("hidden");
-	})
-
-	document.getElementById('make-payment').addEventListener('click', function(e){
-	    	submitFormData()
-	    })
-
-	var total = "{{ orden.total_orden_precio }}"
-
-	function submitFormData(){
-		console.log('Payment button clicked')
-
-		var userFormData = {
-			'name':null,
-			'email':null,
-			'total':total,
-		}
-
-		var despachoInfo = {
-			'calle':null,
-			'altura':null,
-			'municipio':null,
-			'localidad':null,
-		}
-
-		despachoInfo.calle = form.calle.value
-		despachoInfo.altura = form.altura.value
-		despachoInfo.municipio = form.municipio.value
-		despachoInfo.localidad = form.localidad.value
-
-		if (user == 'AnonymousUser'){
-			userFormData.name = form.name.value
-			userFormData.email = form.email.value
-		}
-
-		console.log('Shipping Info:', despachoInfo)
-		console.log('User Info:', userFormData)
-
-		var url = "procesando"
-		fetch(url, {
-			method:'POST',
-			headers:{
-				'Content-Type':'applicaiton/json',
-				'X-CSRFToken':csrftoken_2,
-			}, 
-			body:JSON.stringify({'form':userFormData, 'despacho':despachoInfo}),
-			
-		})
-		.then((response) => response.json())
-		.then((data) => {
-			console.log('Success:', data);
-			alert('¡Transacción Completada!');  
-
-			cart = {}
-			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
-
-			window.location.href = "{% url 'tienda' %}"
-
-			})
-	}
-
-	// if (user != "AnonymousUser"){
-	// 	document.getElementById("user-info").innerHTML = ""
-	// }
-
-
+<script>
+	var total = '{{orden.total_orden_precio}}'
+	var volver = "{% url 'tienda' %}"
 </script>
 {% endblock content %}

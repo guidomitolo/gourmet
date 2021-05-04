@@ -16,21 +16,14 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'main/css/styles.css' %}" rel="stylesheet" />
-
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
-
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
-    
+   
         <link rel="stylesheet" href="{% static 'tienda/css/tienda.css' %}"></link>
         <link rel="stylesheet" href="{% static 'menu/css/menu.css' %}"></link>
-    
-        <script type="text/javascript">
-          var user = "{{ request.user }}"
-        </script>
-    
+        
     </head>
     <body id="page-top">
-      <!-- Navigation-->
+
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
           <div class="container">
               <a class="navbar-brand js-scroll-trigger" href="{% url 'home' %}">
@@ -51,48 +44,57 @@
                     <li class="nav-item">
                       <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'tienda' %}">Tienda</a>
                     </li>
-                    {% if user.is_superuser %}
+                    {% if not user.is_authenticated %}
                     <li class="nav-item">
-                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'control' %}">Panel</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'cargar' %}">Cargar</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'perfil_admin' %}">Perfil</a>
-                    </li>
-                    {% elif user.is_employee %}
-                    <li class="nav-item">
-                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'cargar' %}">Cargar</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'perfil_empleado' %}">Perfil</a>
-                    </li>
-                    {% elif user.is_customer %}
-                    <li class="nav-item">
-                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'perfil_cliente' %}">Perfil</a>
-                    </li>
+                      <div class="dropdown">
+                        <a type="button"  class="nav-link" class="nav-link js-scroll-trigger">
+                          <i class="bi bi-person-square"></i>
+                        </a>
+                    {% else %}
+                    <li class="nav-item border-bottom">
+                      <div class="dropdown">
+                        <a type="button" class="nav-link" class="nav-link js-scroll-trigger">
+                          {% if user.first_name %}
+                          ¡Hola {{ user.first_name }}!
+                          {% else %}
+                          ¡Hola!
+                          {% endif %}
+                        </a>
                     {% endif %}
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'logout' %}">Salir</a>
+                        <div class="dropdown-content rounded my-n1">
+                          {% if user.is_authenticated %}
+                            {% if user.is_superuser %}
+                            <a class="dropdown-item" href="{% url 'control' %}">Panel</a>
+                            <a class="dropdown-item" href="{% url 'cargar' %}">Cargar</a>
+                            <a class="dropdown-item" href="{% url 'perfil_admin' %}">Perfil</a>
+                            {% elif user.is_employee %}
+                            <a class="dropdown-item" href="{% url 'cargar' %}">Cargar</a>
+                            <a class="dropdown-item" href="{% url 'perfil_empleado' %}">Perfil</a>
+                            {% elif user.is_customer %}
+                            <a class="dropdown-item" href="{% url 'perfil_cliente' %}">Perfil</a>
+                            {% endif %}
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="{% url 'logout' %}">Salir</a>
+                          {% else %}
+                          <a class="dropdown-item" href="{% url 'login' %}">Ingresar</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item">Registrarse</a>
+                          <a class="dropdown-item text-capitalize" href="{% url 'cliente_reg' %}">Soy cliente</a>
+                          <a class="dropdown-item text-capitalize" href="{% url 'empleado_reg' %}">Soy empleado</a>
+                          {% endif %}
+                        </div>
+                      </div>
                     </li>
-                    {% endif %}
-                    {% if user.is_authenticated == False %}
+                    {% if not user.is_superuser and not user.is_employee %}
                     <li class="nav-item">
-                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'login' %}">
-                        <i class="bi bi-person-square"></i>
-                      </a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item">
-                      <a class="nav-link" class="nav-link js-scroll-trigger" href="{% url 'carrito' %}">
-                        <svg class="mb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                      <a class="nav-link mr-n2" class="nav-link js-scroll-trigger" href="{% url 'carrito' %}">
+                        <svg class="mb-1 mr-n5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
                           <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                         </svg>
-                        <!-- <p id="cart-total">{{ carrito_items }}</p> -->
                       </a>
                     </li>
+                    <p id="cart-total">{{ carrito_items }}</p>
+                    {% endif %}
                   </ul>
               </div>
           </div>
@@ -101,7 +103,6 @@
       {% block content %}
       {% endblock content %}
 
-      <!-- Footer-->
       <footer class="footer py-4">
           <div class="container">
               <div class="row align-items-center">
@@ -112,7 +113,7 @@
                   </div>
                   <div class="col-lg-4 text-lg-right">
                       <a class="mr-3" href="{% url 'about' %}">Sobre nosotros</a>
-                      <a href="#!">Diseño</a>
+                      <a href="https://github.com/guidomitolo">Diseño</a>
                   </div>
               </div>
           </div>
@@ -129,8 +130,6 @@
       <script type="text/javascript" src="{% static 'main/js/bootstrap.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'main/js/holder.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'main/js/scripts.js' %}"></script>
-      <script type="text/javascript" src="{% static 'tienda/js/cart.js' %}"></script>
-
     </body>
 </html>
 

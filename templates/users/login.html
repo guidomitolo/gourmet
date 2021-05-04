@@ -13,16 +13,23 @@
       <a href="{% url 'home' %}" >
         <img class="mb-4" src="{% static 'main/img/logo_shelter_2.png' %}" alt="" width="150" height="150">
       </a>
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-warning" role="alert">{{ message }}</div>
+      {% endfor %}
+      {% endif %}
       <form method="POST">
         {% csrf_token %}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">
               <h1 class="h3 mb-3 font-weight-normal">Ingresar</h1>
             </legend>
-            <div class="my-1">Usuario</div>
-            {{ form.username }}
-            <div class="my-1">Password</div>
-            {{ form.password }}
+            <div style="padding-left: 20%; padding-right: 20%;">
+              <div class="my-1">Email</div>
+              {{ form.username }}
+              <div class="my-1">Password</div>
+              {{ form.password }}
+            </div>
         </fieldset>
         <div class="form-group">
             <button class="btn btn-outline-info" type="submit">Ingresar</button>

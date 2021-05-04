@@ -32,7 +32,7 @@
     color: #fed136;
   }
   
-  /* @media (min-width: 992px) {
+  @media (min-width: 992px) {
     #mainNav2 {
       padding-top: 1.5rem;
       padding-bottom: 1.5rem;
@@ -66,4 +66,4 @@
     #mainNav2 .navbar-nav .nav-item:last-child {
       margin-right: 0;
     }
-  } */
+  }

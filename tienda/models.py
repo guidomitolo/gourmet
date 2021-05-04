@@ -49,10 +49,12 @@ class OrdenarProducto(models.Model):
 class Despacho(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, blank=True, null=True)
     orden = models.ForeignKey(Orden, on_delete=models.SET_NULL, null=True)
+
     calle = models.CharField(max_length=200, null=True)
     altura = models.IntegerField(null=True)
     localidad = models.CharField(max_length=200, null=True)
     municipio = models.CharField(max_length=200, null=True)
+    
     fecha_agregada = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

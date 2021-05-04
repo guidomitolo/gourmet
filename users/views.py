@@ -1,23 +1,51 @@
 from django.shortcuts import render, redirect
-# importo formularios
-from .forms import RegistroCliente, RegistroEmpleado, ActualizarCliente, ActualizarEmpleado, ActualizarPerfil, ActualizarUsuario
-# importo clase para crear vistas-objeto
+
+from .forms import (
+    LoginForm,
+    RegistroCliente, 
+    RegistroEmpleado, 
+    ActualizarCliente, 
+    ActualizarEmpleado, 
+    ActualizarPerfil, 
+    ActualizarUsuario
+)
+
 from django.views.generic import CreateView
-# importar clase para emitir mensajes en vistas de clase
 from django.contrib.messages.views import SuccessMessageMixin
-# importar metodo para emitir mensajes en vistas funcion
 from django.contrib import messages
-# importo decorador creado ad-hoc
-# importor metodo para "decorar" clases
-# https://docs.djangoproject.com/en/3.1/topics/class-based-views/intro/#decorating-the-class
+
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
+
 from .decorators import unauthenticated_user, allowed_users
 from django.utils.decorators import method_decorator
-# importar requisito de logueo
-from django.contrib.auth.decorators import login_required
-# importo modelo de ususario actual para pedir lista de empleados
-from django.contrib.auth import get_user_model
 
+from menu.models import Producto
+from tienda.models import Orden
+from django.contrib.auth import get_user_model
 User = get_user_model()
+
+
+def login_form(request):
+
+	if request.method == "POST":
+		form = LoginForm(request, data=request.POST)
+
+		if form.is_valid():
+			username = form.cleaned_data.get('username')
+			password = form.cleaned_data.get('password')
+			user = authenticate(username=username, password=password)
+			if user is not None:
+				login(request, user)
+				messages.info(request, f"¡Bienvenido {username}!")
+				return redirect("home")
+			else:
+				messages.error(request,"Password o correo inválidos.")
+		else:
+			messages.error(request,"Password o correo inválidos.")
+
+	form = LoginForm()
+	return render(request=request, template_name="users/login.html", context={"form":form})
 
 
 @method_decorator(unauthenticated_user, name='dispatch')
@@ -150,6 +178,7 @@ def profile_admin(request):
 @allowed_users(allowed_roles=['admin'])
 def panel_control(request):
     if request.method == 'POST':
+        # moderación empleados
         if request.POST.get('activar'):
             empleado = User.objects.filter(id = request.POST['activar']).first()
             empleado.is_active = True
@@ -159,11 +188,30 @@ def panel_control(request):
             empleado = User.objects.filter(id = request.POST['desactivar']).first()
             empleado.is_active = False
             empleado.save()
-            return redirect('contrl')
+            return redirect('control')
+        if request.POST.get('eliminar'):
+            empleado = User.objects.filter(id = request.POST['eliminar']).first()
+            empleado.delete()
+            return redirect('control')
+        # moderación productos
+        if request.POST.get('publicar_p'):
+            producto = Producto.objects.filter(id = request.POST['publicar_p']).first()
+            producto.estado = "Publicado"
+            producto.save()
+            return redirect('control')
+        if request.POST.get('eliminar_p'):
+            producto = Producto.objects.filter(id = request.POST['eliminar_p']).first()
+            producto.delete()
+            return redirect('control')
+
     context = {
         'empleados': User.objects.filter(is_employee = True),
         'total_clientes': User.objects.filter(is_customer = True).count(),
-        'total_empleados': User.objects.filter(is_employee = True).count()
+        'total_empleados': User.objects.filter(is_employee = True).count(),
+        'productos': Producto.objects.filter(estado="Pausado"),
+        'ordenes': Orden.objects.filter(completado=True).count()
     }
+
+    print(Orden.total_orden_cantidad)
 
     return render(request, 'users/panel_control.html', context)

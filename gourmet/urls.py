@@ -34,9 +34,12 @@ urlpatterns = [
     path('tienda/', include('tienda.urls')),
     
     # acceso al registro de usuarios
-    path('register/', include('users.urls')),
+    # path('register/', include('users.urls')),
+    path('users/', include('users.urls')),
+
     # acceso al logueo de usuarios
-    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    # path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+
     # acceso a la vista de deslogueo
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
 
