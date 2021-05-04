@@ -1,7 +1,9 @@
-{% extends "main/base.html" %}
+{% extends "main/plantilla.html" %}
 {% block content %}
+<div class="container mt-5">
     <div class="alert alert-info">
         Tu contraseña ha sido reseteada.
     </div>
     <a href="{% url 'login' %}">Volver a ingresar</a>
+</div>
 {% endblock content %}

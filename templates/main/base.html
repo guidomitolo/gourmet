@@ -64,23 +64,23 @@
                         <div class="dropdown-content rounded my-n1">
                           {% if user.is_authenticated %}
                             {% if user.is_superuser %}
-                            <a class="dropdown-item" href="{% url 'control' %}">Panel</a>
-                            <a class="dropdown-item" href="{% url 'cargar' %}">Cargar</a>
-                            <a class="dropdown-item" href="{% url 'perfil_admin' %}">Perfil</a>
+                            <a class="dropdown-item rounded" href="{% url 'control' %}">Panel</a>
+                            <a class="dropdown-item rounded" href="{% url 'cargar' %}">Cargar</a>
+                            <a class="dropdown-item rounded" href="{% url 'perfil_admin' %}">Perfil</a>
                             {% elif user.is_employee %}
-                            <a class="dropdown-item" href="{% url 'cargar' %}">Cargar</a>
-                            <a class="dropdown-item" href="{% url 'perfil_empleado' %}">Perfil</a>
+                            <a class="dropdown-item rounded" href="{% url 'cargar' %}">Cargar</a>
+                            <a class="dropdown-item rounded" href="{% url 'perfil_empleado' %}">Perfil</a>
                             {% elif user.is_customer %}
-                            <a class="dropdown-item" href="{% url 'perfil_cliente' %}">Perfil</a>
+                            <a class="dropdown-item rounded" href="{% url 'perfil_cliente' %}">Perfil</a>
                             {% endif %}
                           <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="{% url 'logout' %}">Salir</a>
+                          <a class="dropdown-item rounded" href="{% url 'logout' %}">Salir</a>
                           {% else %}
-                          <a class="dropdown-item" href="{% url 'login' %}">Ingresar</a>
+                          <a class="dropdown-item rounded" href="{% url 'login' %}">Ingresar</a>
                           <div class="dropdown-divider"></div>
-                          <a class="dropdown-item">Registrarse</a>
-                          <a class="dropdown-item text-capitalize" href="{% url 'cliente_reg' %}">Soy cliente</a>
-                          <a class="dropdown-item text-capitalize" href="{% url 'empleado_reg' %}">Soy empleado</a>
+                          <a class="dropdown-item rounded">Registrarse</a>
+                          <a class="dropdown-item rounded text-capitalize" href="{% url 'cliente_reg' %}">Soy cliente</a>
+                          <a class="dropdown-item rounded text-capitalize" href="{% url 'empleado_reg' %}">Soy empleado</a>
                           {% endif %}
                         </div>
                       </div>

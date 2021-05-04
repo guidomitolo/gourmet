@@ -7,8 +7,14 @@
             <h2 class="section-heading text-uppercase text-left mb-2">Checkout</h2>
 		</div>
 		<div class="my-5">
+			<!-- {% if carrito_items and not user.is_authenticated %}
+			<div class="box-element border rounded mb-3 p-2">
+				<p>Pedí reseteo de contraseña con tu correo electrónico para crearte una cuenta en nuestra web</p>
+			</div> -->
+			{% endif %}
 			<div class="row">
 				<div class="col-lg-6">
+					{% if carrito_items %}
 					<div class="box-element border rounded" id="form-wrapper">
 						<form method="post" id="form">
 							{% csrf_token %}
@@ -52,8 +58,10 @@
 								<div class="form-field">
 									<input required class="form-control" type="text" name="email" placeholder="Correo">
 								</div>
+								<div class="form-field">
+								</div>
+								<div class="p-2 text-muted" style="font-size: 13px;">* Reseteá tu contraseña con tu correo electrónico para tener tu cuenta en shelter</div>
 							</div>
-							
 							<div id="shipping-info">
 								<h5 class="text-center">Información de envío</h5>
 								<div class="form-field">
@@ -74,6 +82,7 @@
 							<input id="form-button" class="btn btn-primary text-uppercase btn-block mt-4" type="submit" value="Aceptar y continuar">
 						</form>
 					</div>
+					{% endif %}
 		
 					<br>
 					<div class="box-element hidden border rounded" id="payment-info">

@@ -17,35 +17,44 @@ def carrito_cookie(request):
     items = []
     carrito_items = orden['total_items']
 
-    for item_id in carrito:
+    try:
+        for item_id in carrito:
 
-        carrito_items += carrito[item_id]['quantity']
-        producto = Producto.objects.get(id = item_id)
-        total = producto.precio * carrito[item_id]['quantity']
+            producto = Producto.objects.get(id = item_id)
+            carrito_items += carrito[item_id]['quantity']
+            total = producto.precio * carrito[item_id]['quantity']
 
-        orden['total_orden_precio'] += total
-        orden['total_items'] += carrito[item_id]['quantity']
+            orden['total_orden_precio'] += total
+            orden['total_items'] += carrito[item_id]['quantity']
 
-        item = {
-            'producto': {
-                'id': producto.id,
-                'nombre': producto.nombre,
-                'precio': producto.precio,
-                'ruta_imagen': producto.ruta_imagen,
-            },
-            'cantidad': carrito[item_id]['quantity'],
-            'total_precio': total
+            item = {
+                'producto': {
+                    'id': producto.id,
+                    'nombre': producto.nombre,
+                    'precio': producto.precio,
+                    'ruta_imagen': producto.ruta_imagen,
+                },
+                'cantidad': carrito[item_id]['quantity'],
+                'total_precio': total
+            }
+
+            items.append(item)
+
+        context = {
+            "title":"Carrito",
+            "items": items,
+            "orden": orden,
+            'carrito_items':carrito_items
         }
-
-        items.append(item)
-
-    context = {
-        "title":"Carrito",
-        "items": items,
-        "orden": orden,
-        'carrito_items':carrito_items
-    }
-			
+    except:
+        print("CARRITO ITEMS", carrito_items)
+        context = {
+            "title":"Carrito",
+            "items": items,
+            "orden": orden,
+            'carrito_items':carrito_items
+        }
+                
     return context
 
 

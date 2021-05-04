@@ -44,6 +44,11 @@ def tienda(request):
             # el usuario logueado no es cliente -> sólo mostrar
             categorias = Categoria.objects.all()
             productos = None
+
+            if request.method == 'POST':
+                if request.POST.get('buscar'):
+                    productos = Producto.objects.filter(nombre=request.POST.get("productos"))
+
             return render(request, 'tienda/tienda.html', {
                 'title': 'Tienda',
                 'items': productos,
@@ -139,10 +144,11 @@ def procesar_orden(request):
         fantasma, creado = User.objects.get_or_create(
             email = email
         )
-        # fantasma.is_customer = True
+        fantasma.is_customer = True
         fantasma.is_guest = True
         fantasma.first_name = nombre
         fantasma.last_name = apellido
+        fantasma.save()
 
         cliente, creado = Cliente.objects.get_or_create(
             user = fantasma
