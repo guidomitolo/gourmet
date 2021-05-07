@@ -106,6 +106,10 @@ address {
   line-height: inherit;
 }
 
+ul {
+    list-style-type: none;
+}
+
 ol,
 ul,
 dl {

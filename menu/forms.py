@@ -7,6 +7,18 @@ class AgregarCategoria(forms.ModelForm):
     class Meta:
         model = Categoria
         fields = ['nombre', 'slug']
+        widgets = {
+            'nombre': forms.TextInput(
+                attrs = {
+                    "class": "form-control"
+                }
+            ),
+            'slug': forms.TextInput(
+                attrs = {
+                    "class": "form-control"
+                }
+            ),
+        }
 
 
 class EliminarCategoria(forms.ModelForm):
@@ -30,19 +42,50 @@ class CargarProducto(forms.ModelForm):
         model = Producto
 
         fields = ['categoria', 'nombre', 'detalle', 'celiaco', 'vegano','delivery','ruta_imagen','precio','estado']
-
-        error_messages = {
-            'nombre': {
-                'required': ("Se debe agregar un nombre de producto"),
-                    },
-            'precio': {
-                'required': ("Se debe definir un precio"),
-                },
+        widgets = {
+            'nombre': forms.TextInput(
+                attrs = {
+                    "class": "form-control"
+                }
+            ),
+            'detalle': forms.Textarea(
+                attrs = {
+                    "class": "form-control"
+                }
+            ),
+            'celiaco': forms.CheckboxInput(
+                attrs = {
+                    "class": "form-check-input"
+                }
+            ),
+            'vegano': forms.CheckboxInput(
+                attrs = {
+                    "class": "form-check-input"
+                }
+            ),
+            'delivery': forms.CheckboxInput(
+                attrs = {
+                    "class": "form-check-input"
+                }
+            ),
+            'precio': forms.NumberInput(
+                attrs = {
+                    "class": "form-control"
+                }
+            ),
+            'estado': forms.Select(
+                attrs = {
+                    "class": "form-control"
+                }
+            ),
+            'categoria': forms.SelectMultiple(
+                attrs = {
+                    "class": "form-control",
+                    "aria-label": "multiple select example"
+                }
+            ),
         }
 
-    categoria = forms.ModelMultipleChoiceField(
-        queryset=Categoria.objects.all(),
-    )
 
     def __init__(self, *args, **kwargs):
         super(CargarProducto, self).__init__(*args, **kwargs)

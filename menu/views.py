@@ -8,6 +8,8 @@ from menu.forms import CargarProducto, AgregarCategoria, EliminarCategoria, Busc
 from django.contrib.auth.decorators import login_required
 from users.decorators import allowed_users
 
+from tienda.helpers import carrito_cookie
+
 # busqueda con AJAX
 from django.views.generic import View
 import json
@@ -31,9 +33,9 @@ def menu(request):
             if request.user.is_customer:
                 carrito = Orden.objects.get(cliente=request.user.cliente, completado=False).total_orden_cantidad
             else:
-                carrito = 0
+                carrito = carrito_cookie(request)['carrito_items']
         else:
-            carrito = 0
+            carrito = carrito_cookie(request)['carrito_items']
     
     return render(request, 'menu/menu.html', {
         'title': 'Menu',
@@ -208,9 +210,9 @@ def promos(request):
         if request.user.is_customer:
             carrito = Orden.objects.get(cliente=request.user.cliente, completado=False).total_orden_cantidad
         else:
-            carrito = 0
+            carrito = carrito_cookie(request)['carrito_items']
     else:
-        carrito = 0
+        carrito = carrito_cookie(request)['carrito_items']
 
     context = {
         "title": "Promos",

@@ -3,24 +3,22 @@
 {% block content %}
 <section class="page-section bg-light">
     <div class="container">
-        <div class="border-bottom mb-5">
+        <div class="mb-5">
+            <div class="row border-bottom">
+                {% if user.is_superuser or user.is_employee %}
+                <a class="text-right" href="{% url 'api_prod' %}">
+                    <h2 class="section-heading text-uppercase text-left">Nuestra carta</h2>
+                </a>
+                {% else %}
+                    <h2 class="section-heading text-uppercase text-left">Nuestra carta</h2>
+                {% endif %}
+            </div>
             <div class="row">
-                <div class="col-8">
-                    {% if user.is_superuser or user.is_employee %}
-                    <a class="text-right" href="{% url 'api_prod' %}">
-                        <h2 class="section-heading text-uppercase text-left">Nuestra carta</h2>
-                    </a>
-                    {% else %}
-                        <h2 class="section-heading text-uppercase text-left">Nuestra carta</h2>
-                    {% endif %}
-                </div>
-                <div class="col-4 pl-6">
-                    <form method="post" class="form-inline mt-2" style="float: right;">
-                        {% csrf_token %}
-                        <input class="form-control-sm mr-2 mt-2" type="text" id="productos" name="productos" aria-label="Search">
-                        <button class="btn btn-primary btn-sm text-uppercase mt-2" name="buscar" value="buscar" type="submit">Buscar</button>
-                    </form>
-                </div>
+                <form method="post" class="form-inline mt-2" style="float: left;">
+                    {% csrf_token %}
+                    <input class="form-control mr-sm-2" type="text" id="productos" name="productos" aria-label="Search">
+                    <button class="btn btn-primary btn-sm text-uppercase mt-2 my-2 my-sm-0" name="buscar" value="buscar" type="submit">Buscar</button>
+                </form>
             </div>
         </div>
 
@@ -72,7 +70,7 @@
                 <b>{{ categoria }}</b>
             </button>
             <div class="content border">
-            <div class="row m-2 p-3 mb-3 border">
+            <div class="row m-2 border">
                 <div class="col-7">
                     <div class="mb-4">
                         <h5 class="mb-3"><b>{{ producto.nombre }}</b>

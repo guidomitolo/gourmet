@@ -8,53 +8,45 @@
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
-                <div class="col-7">
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Categoria</span>
-                        </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <h5>
+                            Categoria
+                            <button type="button" class="btn btn-info btn-sm my-auto mx-2 m-1" data-toggle="modal" data-target="#myModal">+</button>
+                        </h5>
                         {{ pr_form.categoria }}
-                        <button type="button" class="btn btn-info btn-lg my-auto mx-2" data-toggle="modal" data-target="#myModal">+</button>
                     </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Nombre</span>
-                        </div>
+                    <div class="form-group">
+                        <h5>
+                            Nombre
+                        </h5>
                         {{ pr_form.nombre }}
                     </div>
-
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Detalle</span>
-                        </div>
+                    <div class="form-group">
+                        <h5>
+                            Detalle
+                        </h5>
                         {{ pr_form.detalle }}
-                        </div>
+                    </div>
                 </div>
-                <div class="col-5">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                {{ pr_form.celiaco }}
-                            </div>
-                        </div>
-                        <p type="text" class="form-control">Apto celíaco</p>
+                <div class="col-6">
+                    <div class="form-check mb-3">
+                        {{ pr_form.celiaco }}
+                        <label class="form-check-label">
+                            Celíaco
+                        </label>
                     </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                {{ pr_form.vegano }}
-                            </div>
-                        </div>
-                        <p type="text" class="form-control">Vegano</p>
+                    <div class="form-check mb-3">
+                        {{ pr_form.vegano }}
+                        <label class="form-check-label">
+                            Vegano
+                        </label>
                     </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                {{ pr_form.delivery }}
-                            </div>
-                        </div>
-                        <p type="text" class="form-control">Delivery / Take Away</p>
+                    <div class="form-check mb-3">
+                        {{ pr_form.delivery }}
+                        <label class="form-check-label">
+                            Delivery/Take Away
+                        </label>
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -62,22 +54,19 @@
                         </div>
                         {{ pr_form.precio }}
                         <div class="input-group-append">
-                            <span class="input-group-text">ARS</span>
+                            <span class="input-group-text">$</span>
                         </div>
-                        </div>
-
+                    </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">Estado</label>
                         </div>
                         {{ pr_form.estado }}
                     </div>
-
                     <div class="border rounded my-3">
-                        <span class="input-group-text mb-3">Subir imagen</span>
-                        <div class="m-3">{{ pr_form.ruta_imagen }}</div>
+                        <span class="input-group-text mb-2">Subir imagen</span>
+                        <div class="m-2">{{ pr_form.ruta_imagen }}</div>
                     </div>
-                    
                 </div>
             </div>
             <div class="my-3">
@@ -112,7 +101,7 @@
                                     <div>
                                         {% csrf_token %}
                                         <div class="mt-2">Eliminar categoría</div>
-                                        <div class="mt-2">{{ del_cat.categoria }}</div>
+                                        <div class="mt-2 ml-n4">{{ del_cat.categoria }}</div>
                                         <button class="btn btn-sm btn-outline-info m-3" type="submit" name="eliminar" value='eliminar'>Eliminar</button>
                                     </div>
                                 </form>
