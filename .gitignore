@@ -4,5 +4,5 @@ __pycache__
 /media/menu/img
 /media/users/img
 /media/profile_pics/img
-/menu/img/*
+static/menu/img/
 migrations

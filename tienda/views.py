@@ -20,6 +20,7 @@ def tienda(request):
     if request.user.is_authenticated:
         # el usuario logueado es cliente
         try:
+            print(request.user.cliente)
             request.user.cliente
             cliente = request.user.cliente
             orden, creado = Orden.objects.get_or_create(cliente=cliente, completado=False)
