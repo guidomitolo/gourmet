@@ -1,6 +1,8 @@
 __pycache__
 *.sqlite3
 *.env
-/media/profile_pics/*
+/media/menu/img
+/media/users/img
+/media/profile_pics/img
 /menu/img/*
 migrations

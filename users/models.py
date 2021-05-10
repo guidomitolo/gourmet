@@ -41,7 +41,7 @@ class Empleado(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='users/default.jpg', upload_to='profile_pics')
+    image = models.ImageField(default='users/default.jpg', upload_to='profile_pics/img/%Y/%m/%d')
 
     def __str__(self,):
         return f'{self.user.username} Profile'
