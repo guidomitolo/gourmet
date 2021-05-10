@@ -3,15 +3,18 @@
 {% block content %}
 <section class="page-section bg-light">
     <div class="container">
-        <div class="border-bottom">
-            <h2 class="section-heading text-uppercase">Tienda
-            {% if not user.is_superuser and not user.is_employee %}
-                <button class="btn btn-primary btn-sm text-uppercase mt-2" style="float: right;" href="{% url 'carrito' %}">Ir al carrito</button>                
-            {% endif %}
-            </h2>              
-        </div>
-        <div class="row mb-4">
-            <div class="col-7 text-left">
+        <div class="mb-5">
+            <div class="row border-bottom">
+                <div class="col-6 text-left">
+                    <h2 class="section-heading text-uppercase">Tienda</h2>
+                </div>
+                <div class="col-6 text-right mt-3">
+                    {% if not user.is_superuser and not user.is_employee %}
+                    <button class="btn btn-primary btn-sm text-uppercase" href="{% url 'carrito' %}">Ir al carrito</button>                
+                {% endif %}                  
+                </div>
+            </div>
+            <div class="row">
                 <form method="post" class="form-inline mt-2" style="float: left;">
                     {% csrf_token %}
                     <input class="form-control mr-sm-2" type="text" id="productos" name="productos" aria-label="Search">
@@ -22,86 +25,75 @@
 
         {% if items %}
 
-            {% for item in items %}
-            <div class="row border p-2 my-3 rounded" style="box-shadow: 1px 1px 1px #aaaaaa;">
-                <div class="col-7">
-                    <div class="mb-4">
-                        <h5 class="mb-3"><b>{{ item.nombre }}</b></h5>
-                        {{ item.detalle }}
-                    </div>
-                    <button data-product="{{item.id}}" data-action="add" class="btn btn-primary btn-sm text-uppercase add-btn update-cart">Agregar</button>
+        {% for item in items %}
+        <div class="row border p-2 my-3 rounded" style="box-shadow: 1px 1px 1px #aaaaaa;">
+            <div class="col-7">
+                <div class="mb-4">
+                    <h5 class="mb-3"><b>{{ item.nombre }}</b></h5>
+                    {{ item.detalle }}
                 </div>
-                <div class="col-2">
-                    <b>ARS {{ item.precio }}</b><br><br>
-                    {% if item.delivery %}
-                        <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/delivery.png' %}" width="25">
-                    {% endif %}
-                    {% if item.vegano %}
-                        <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/vegan_1.png' %}" width="25">
-                    {% endif %}
-                    {% if item.celiaco %}
-                        <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/celiaco.png' %}" width="25">
-                    {% endif %}
-                </div>
-                <div class="col-3 text-center">
-                    {% if item.ruta_imagen %}
-                    <img class="img-fluid rounded" src="/media/{{ item.ruta_imagen }}" width="170">
-                    {% endif %}
-                </div>
+                <button data-product="{{item.id}}" data-action="add" class="btn btn-primary btn-sm text-uppercase add-btn update-cart">Agregar</button>
             </div>
-            {% endfor %}
+            <div class="col-2">
+                <b>ARS {{ item.precio }}</b><br><br>
+                {% if item.delivery %}
+                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/delivery.png' %}" width="25">
+                {% endif %}
+                {% if item.vegano %}
+                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/vegan_1.png' %}" width="25">
+                {% endif %}
+                {% if item.celiaco %}
+                    <img class="img-fluid max-width: 100% rounded" src="{% static 'menu/img/celiaco.png' %}" width="25">
+                {% endif %}
+            </div>
+            <div class="col-3 text-center">
+                {% if item.ruta_imagen %}
+                <img class="img-fluid rounded" src="/media/{{ item.ruta_imagen }}" width="170">
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
 
         {% else %}
 
-            {% for categoria in categorias %}
-                {% if categoria.producto_set.all|length > 0 %}
-                <button class="collapsible">
-                    <b>{{ categoria }}</b>
-                </button>
-                <div class="content border">
-                    {% for producto in categoria.producto_set.all %}
-                        {% if producto.estado == "Publicado" %}
-                            <div class="row my-1 py-2 border">
-                                <div class="col-7">
-                                    <div class="mb-4">
-                                        <div class="mb-4">
-                                            <h6>
-                                                <b>{{ producto.nombre }}</b>
-                                            </h6>
-                                            <div class="ml-n2 mt-n2 mb-2">
-                                                {% if producto.delivery %}
-                                                <img class="img-fluid max-width: 100% rounded ml-2" src="{% static 'menu/img/delivery.png' %}" width="15">
-                                                {% endif %}
-                                                {% if producto.vegano %}
-                                                <img class="img-fluid max-width: 100% rounded ml-2" src="{% static 'menu/img/vegan_1.png' %}" width="15">
-                                                {% endif %}
-                                                {% if producto.celiaco %}
-                                                <img class="img-fluid max-width: 100% rounded ml-2" src="{% static 'menu/img/celiaco.png' %}" width="20">
-                                                {% endif %}
-                                            </div>
-                                            <small>{{ producto.detalle }}</small>
-                                        </div>
-                                    </div>
-                                    {% if user.is_customer or user.is_authenticated == False %}
-                                    <button data-product="{{producto.id}}" data-action="add" class="btn btn-primary btn-sm text-uppercase add-btn update-cart">Agregar</button>
-                                    {% endif %}
-                                </div>
-                                <div class="col-2">
-                                    <b>ARS {{ producto.precio }}</b><br><br>
-                                </div>
-                                <div class="col-3 text-center">
-                                    {% if producto.ruta_imagen %}
-                                    <img class="img-fluid rounded" style="float: right;" src="/media/{{ producto.ruta_imagen }}" width="130">
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-
+        {% for categoria in categorias %}
+        <button class="collapsible">
+            <b>{{ categoria }}</b>
+        </button>
+        <div class="content border">
+        {% for producto in categoria.producto_set.all %}
+            <div class="row m-2 border">
+                <div class="col-7">
+                    <div class="mb-4">
+                        <h5 class="mb-3"><b>{{ producto.nombre }}</b>
+                            {% if producto.delivery %}
+                            <img class="img-fluid max-width: 100% rounded ml-2" src="{% static 'menu/img/delivery.png' %}" width="25">
+                            {% endif %}
+                            {% if producto.vegano %}
+                            <img class="img-fluid max-width: 100% rounded ml-2" src="{% static 'menu/img/vegan_1.png' %}" width="25">
+                            {% endif %}
+                            {% if producto.celiaco %}
+                            <img class="img-fluid max-width: 100% rounded ml-2" src="{% static 'menu/img/celiaco.png' %}" width="34">
+                            {% endif %}
+                        </h5>
+                        {{ producto.detalle }}
+                    </div>
+                    {% if user.is_customer or user.is_authenticated == False %}
+                    <button data-product="{{producto.id}}" data-action="add" class="btn btn-primary btn-sm text-uppercase add-btn update-cart">Agregar</button>
+                    {% endif %}
                 </div>
-                {% endif %}
-            {% endfor %}
-
+                <div class="col-2">
+                    <b>ARS {{ producto.precio }}</b><br><br>
+                </div>
+                <div class="col-3 text-center">
+                    {% if producto.ruta_imagen %}
+                    <img class="img-fluid rounded" src="/media/{{ producto.ruta_imagen }}" width="170">
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        {% endfor %}
         {% endif %}
     </div>
 </section>
