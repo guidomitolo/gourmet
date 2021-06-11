@@ -1,10 +1,22 @@
-
 version: '3'
 
 services:
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: ${PSQL_USER}
+      POSTGRES_PASSWORD: ${PSQL_PASS}
+      POSTGRES_DB: ${PSQL_DB}
   gourmet:
     build: .
     env_file: .env
-    command: python3 manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
+    depends_on:
+      - db
+
+
+volumes:
+  postgres_data:

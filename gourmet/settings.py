@@ -28,7 +28,7 @@ SECRET_KEY = 'i#$jx%!r79x8*#wo82fv(jj=8^+4%-uze#7foog93hz%yymai='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 # TEMPLATE_DEBUG = False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -86,14 +86,17 @@ WSGI_APPLICATION = 'gourmet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# keep autofield (PK) django 3.1 default and avoid warnings
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'gourmet',
-        'USER': 'postgres',
+        'NAME': os.environ.get('PSQL_DB'),
+        'USER': os.environ.get('PSQL_USER'),
         'PASSWORD': os.environ.get('PSQL_PASS'),
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': os.environ.get('PSQL_HOST'),
+        'PORT': os.environ.get("SQL_PORT", "5432"),
     }
 }
 
