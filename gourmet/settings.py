@@ -181,3 +181,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 DEFAULT_FROM_EMAIL = "Shelter Admin. <shelterbeer@shelter.com>"
+
+## SUPERUSER init ##
+
+ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME')
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
+ADMIN_INITIAL_PASSWORD = os.environ.get('ADMIN_PASS')

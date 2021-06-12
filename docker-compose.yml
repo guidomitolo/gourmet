@@ -14,6 +14,9 @@ services:
     env_file: .env
     ports:
       - 8000:8000
+    volumes:
+      - ./statics:/gourmet/staticfiles
+      - ./media:/gourmet/media
     depends_on:
       - db
 
