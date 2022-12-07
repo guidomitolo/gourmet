@@ -5,17 +5,29 @@ services:
     image: postgres:13-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    env_file: .env
     environment:
       POSTGRES_USER: ${PSQL_USER}
       POSTGRES_PASSWORD: ${PSQL_PASS}
       POSTGRES_DB: ${PSQL_DB}
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./staticfiles:/static
+    depends_on:
+      - gourmet
+    
   gourmet:
     build: .
     env_file: .env
     ports:
       - 8000:8000
     volumes:
-      - ./statics:/gourmet/staticfiles
+      - ./staticfiles:/gourmet/staticfiles
       - ./media:/gourmet/media
     depends_on:
       - db

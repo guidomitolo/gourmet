@@ -4,7 +4,7 @@ echo "Collect static files"
 python3 manage.py collectstatic --noinput
 
 echo "Register database tables/models"
-python3 manage.py makemigrations
+python3 manage.py makemigrations users main menu tienda
 
 echo "Apply database migrations"
 python3 manage.py migrate
