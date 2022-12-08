@@ -1,70 +1,53 @@
 from django.db import models
-# configuración del sitio de administración
-from django.utils.html import format_html
-
-# importo User para relacionarlo con el modelo Producto
-from gourmet import settings
-
-# importo datetime para guardar fecha de creación de la entrada
+from users.models import Staff
 import datetime
-
-
 from PIL import Image
 
 
-class Categoria(models.Model):
-    nombre = models.CharField(max_length=100, db_index=True)
-    slug = models.SlugField(max_length=100, db_index=True)
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100)
 
     def __str__(self):
-        return f'{self.nombre}'
+        return self.name
 
-class Producto(models.Model):
+class Meal(models.Model):
 
-    sin_stock = 'Sin stock'
-    publicado = 'Publicado'
-    pausado = 'Pausado'
-    ESTADO_PRODUCTO = (
-        (sin_stock, 'Sin stock'),
-        (publicado, 'Publicado'),
-        (pausado, 'Pausado'),
+    no_stock = 'No stock'
+    published = 'Published'
+    paused = 'Paused'
+    STATE = (
+        (no_stock, 'No stock'),
+        (published, 'Published'),
+        (paused, 'Paused'),
     )
 
-    # control de tiempos
-    pub_date = models.DateField(default=datetime.datetime.today)
-    last_modified = models.DateTimeField(auto_now=True) # cuando se creó/modificó el registro
+    creationDate = models.DateTimeField(default=datetime.datetime.today)
+    modificationDate = models.DateTimeField(auto_now=True)
     
-    # to set the ForeignKey to null when the referenced object is deleted
-    # usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.SET_NULL, blank=True, null=True)
+    staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, blank=True, null=True)
     
-    nombre = models.CharField(max_length=200) # nombre del plato
-    detalle = models.TextField(max_length=300)
-    celiaco = models.BooleanField("Apto celíaco", default=False)
-    vegano = models.BooleanField("Vegano", default=False)
-    delivery = models.BooleanField("Delivery", default=False)
-    ruta_imagen = models.FileField(upload_to='menu/img/%Y/%m/%d', 
-                                    default='menu/default.png',
-                                    blank=True,
-                                    null=True)
-    categoria = models.ManyToManyField(Categoria)
-    precio = models.FloatField()
-    estado = models.CharField(max_length=200, choices=ESTADO_PRODUCTO, default='Pausado')
-
-    def estado_producto(self):
-        if self.estado == 'Sin stock':
-            return format_html('<span style="color: #f00;">{}</span>', self.estado)
-        elif self.estado == 'Pausado':
-            return format_html('<span style="color: #f0f;">{}</span>', self.estado)
-        elif self.estado == 'Publicado':
-            return format_html('<span style="color: #099;">{}</span>', self.estado)
+    name = models.CharField(max_length=200) 
+    description = models.TextField(max_length=300)
+    celiac = models.BooleanField(default=False)
+    vegan = models.BooleanField(default=False)
+    delivery = models.BooleanField(default=False)
+    image = models.FileField(
+        upload_to='menu/img/%Y/%m/%d', 
+        default='menu/default.png',
+        blank=True,
+        null=True
+    )
+    category = models.ManyToManyField(Category)
+    price = models.FloatField()
+    publication = models.CharField(max_length=200, choices=STATE, default=paused)
 
     def __str__(self):
-        return f'{self.nombre}'
-
+        return self.name
 
     def save(self, *args, **kwargs):
 
-        super(Producto, self).save(*args, **kwargs)
+        super(Meal, self).save(*args, **kwargs)
 
         img = Image.open(self.ruta_imagen.path)
 

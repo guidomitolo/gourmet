@@ -1,24 +1,24 @@
 from rest_framework import serializers
-from store.models import Orden, OrdenarProducto, Despacho
+from store.models import Order, OrderMeal, Dispach
 
 
 
-class OrdenSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = Orden
+        model = Order
         fields = "__all__"
 
 
-class OrdenarProductoSerializer(serializers.ModelSerializer):
+class OrderMealSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = OrdenarProducto
+        model = OrderMeal
         fields = "__all__"
 
 
-class DespachoSerializer(serializers.ModelSerializer):
+class DispachSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = Despacho
+        model = Dispach
         fields = "__all__"

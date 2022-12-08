@@ -1,9 +1,9 @@
 from rest_framework import viewsets
-from ..serializers.menu import ProductoSerializer
-from menu.models import Producto
+from ..serializers.menu import MealSerializer
+from menu.models import Meal
 
 
 
-class ProductoViewSet(viewsets.ModelViewSet):
-    queryset = Producto.objects.all()
-    serializer_class = ProductoSerializer
+class MealViewSet(viewsets.ModelViewSet):
+    queryset = Meal.objects.all()
+    serializer_class = MealSerializer

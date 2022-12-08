@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from menu.models import Producto
+from menu.models import Meal
 
 
 
-class ProductoSerializer(serializers.ModelSerializer):
+class MealSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = Producto
+        model = Meal
         fields = "__all__"

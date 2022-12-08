@@ -1,19 +1,19 @@
 from rest_framework import viewsets
-from ..serializers.store import OrdenSerializer, OrdenarProductoSerializer, DespachoSerializer
-from store.models import Orden, OrdenarProducto, Despacho
+from ..serializers.store import OrderSerializer, OrderMealSerializer, DispachSerializer
+from store.models import Order, OrderMeal, Dispach
 
 
 
-class OrdenViewSet(viewsets.ModelViewSet):
-    queryset = Orden.objects.all()
-    serializer_class = OrdenSerializer
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
 
 
-class OrdenarProductoViewSet(viewsets.ModelViewSet):
-    queryset = OrdenarProducto.objects.all()
-    serializer_class = OrdenarProductoSerializer
+class OrderMealViewSet(viewsets.ModelViewSet):
+    queryset = OrderMeal.objects.all()
+    serializer_class = OrderMealSerializer
 
 
-class DespachoViewSet(viewsets.ModelViewSet):
-    queryset = Despacho.objects.all()
-    serializer_class = DespachoSerializer
+class DispachViewSet(viewsets.ModelViewSet):
+    queryset = Dispach.objects.all()
+    serializer_class = DispachSerializer
