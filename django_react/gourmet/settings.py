@@ -81,14 +81,17 @@ WSGI_APPLICATION = 'gourmet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# docker run --name GourmetDB -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_USER=root -e POSTGRES_DB=gourmet -d postgres
+# create database gourmet
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('PSQL_DB'),
-        'USER': os.environ.get('PSQL_USER'),
-        'PASSWORD': os.environ.get('PSQL_PASS'),
-        'HOST': os.environ.get('PSQL_HOST'),
-        'PORT': os.environ.get("PSQL_PORT")
+        'NAME': os.environ.get('PSQL_DB', 'gourmet'),
+        'USER': os.environ.get('PSQL_USER', 'root'),
+        'PASSWORD': os.environ.get('PSQL_PASS', 'mysecretpassword'),
+        'HOST': os.environ.get('PSQL_HOST', '172.17.0.2'),
+        'PORT': os.environ.get("PSQL_PORT", '5432')
     }
 }
 

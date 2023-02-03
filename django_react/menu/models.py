@@ -1,15 +1,18 @@
 from django.db import models
 from users.models import Staff
 import datetime
-from PIL import Image
 
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
 
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+
     def __str__(self):
-        return self.name
+        return f'Category: {self.name}'
 
 class Meal(models.Model):
 
@@ -43,15 +46,4 @@ class Meal(models.Model):
     publication = models.CharField(max_length=200, choices=STATE, default=paused)
 
     def __str__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-
-        super(Meal, self).save(*args, **kwargs)
-
-        img = Image.open(self.ruta_imagen.path)
-
-        if img.height > 250 or img.width > 250:
-            output_size = (250,250)
-            img.thumbnail(output_size)
-            img.save(self.ruta_imagen.path)
+        return f'Meal: {self.name}'

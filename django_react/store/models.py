@@ -6,19 +6,19 @@ from menu.models import Meal
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, blank=True, null=True)
     creationDate = models.DateTimeField(auto_now_add=True)
-    closed = models.BooleanField(default=False, null=True, blank=False)
-    transId = models.CharField(max_length=200, null=True)
+    closed = models.BooleanField(default=False)
+    transactionId = models.CharField(max_length=200, null=True)
 
     @property
     def total_order_price(self):
-        return sum([order.total_price for order in self.ordermeal.all()])
+        return sum([order.meal.price for order in self.ordermeal_set.all()])
 
     @property
     def total_order_quantity(self):
-        return sum([order.quantity for order in self.ordenarproducto_set.all()])
+        return sum([order.quantity for order in self.ordermeal_set.all()])
 
     def __str__(self):
-        return f"{self.customer}: Order n. {self.id}"
+        return f"Order: {self.id}"
 
 
 class OrderMeal(models.Model):
@@ -37,7 +37,7 @@ class OrderMeal(models.Model):
 
 class Dispach(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE) # M2M for multiple order dispach
 
     street = models.CharField(max_length=256, null=True)
     address = models.IntegerField(null=True)
@@ -47,7 +47,7 @@ class Dispach(models.Model):
     creationDate = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.order} - {self.address}"
+        return f"Dispach: {self.order} - {self.state} {self.address}"
     
 
 
